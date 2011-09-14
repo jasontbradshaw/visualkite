@@ -53,12 +53,13 @@ a {
   height: 150px;
 }
 
-.item .author {
+
+.author .screen-name {
   font-weight: bold;
   color: #ca1a69;
 }
 
-.item .author-name {
+.author .author-name {
   color: #999999;
   font-size: 18px;
 }

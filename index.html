@@ -3,44 +3,17 @@
   <head>
     <title>Dominican Joe</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/application.css" />
+    <script type="text/javascript"
+      src="javascripts/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="javascripts/application.js"></script>
   </head>
 
   <body>
     <div class="stream">
-      <div class="item">
-        <div class="pic"><img src="images/profile-images/elben-shira.png"></div>
-        <div class="right-content">
-          <div class="author">ElbenShira <span class="author-name">Elben Shira</span></div>
-          <div class="text">
-            Running away from the Texas heat at
-            @<a href="http://twitter.com/dojocoffe">dojocoffee</a>. <span
-              class="hashtag">#surviving</span>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="pic"><img src="images/profile-images/paul-roberts.png"></div>
-        <div class="right-content">
-          <div class="text">
-            <div class="author">paulrobertsiv <span class="author-name">Paul Roberts IV</span></div>
-            Love the cinnamon latte at @<a href="http://twitter.com/dojocoffe">dojocoffee</a>.
-            Super addicted... But I'm going to go ahead and http://example.com/
-            away to my limit charters ok?!!
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <div class="pic"><img src="images/profile-images/elben-shira.png"></div>
-        <div class="right-content">
-          <div class="author">Daniel Gatsby</div>
-          <div class="text">
-            Checked in 1 minute ago on Gowalla.
-          </div>
-          <div class="details">
-            3 check-ins this week.
-          </div>
-        </div>
-      </div>
     </div>
+    <script>
+      $.getJSON("http://tweetriver.com/massrelevance/glee.json?limit=3&callback=?",
+        {}, receiveTweets);
+    </script>
   </body>
 </html>

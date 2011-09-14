@@ -30,8 +30,9 @@ a {
 }
 
 .item {
+  overflow: auto;
   padding: 20px 20px;
-  margin: 40px 0px 20px -80px;
+  margin: 20px 0px 20px -80px;
   font-size: 32px;
   /*border: 1px solid red;*/
 }

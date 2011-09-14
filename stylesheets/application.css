@@ -1,0 +1,72 @@
+html {
+  height: 100%;
+  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+body {
+  background-image: url("../images/bg.png");
+  background-color: #fff;
+  color: #333;
+
+  margin: 0;
+  height: 100%;
+}
+
+a {
+  /*color: #1a54ca;*/
+  color: #ca1a69;
+  text-decoration: none;
+}
+
+.stream {
+  background-color: rgba(255, 255, 255, 1.0);
+  width: 600px;
+  height: 100%;
+  float: right;
+  margin: 0 100px;
+  padding: 0;
+
+  border-left: 6px solid rgba(200, 200, 200, 0.8);
+  border-right: 6px solid rgba(200, 200, 200, 0.8);
+}
+
+.item {
+  padding: 20px 20px;
+  margin: 40px 0px 20px -80px;
+  font-size: 32px;
+  /*border: 1px solid red;*/
+}
+
+.item .pic {
+  float: left;
+  padding-right: 10px;
+}
+
+.item .pic img {
+  border: 6px solid #ffffff;
+  border-radius: 6px;
+  width: 150px;
+  height: 150px;
+}
+
+.item .author {
+  font-weight: bold;
+  color: #ca1a69;
+}
+
+.item .author-name {
+  color: #999999;
+  font-size: 18px;
+}
+
+.item .text {
+  color: #111111;
+}
+
+.item .details {
+  color: #999999;
+}
+
+.hashtag {
+  color: #999999;
+}

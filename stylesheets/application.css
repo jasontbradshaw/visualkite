@@ -13,14 +13,13 @@ body {
 }
 
 a {
-  /*color: #1a54ca;*/
   color: #ca1a69;
   text-decoration: none;
 }
 
 .stream {
   background-color: rgba(255, 255, 255, 1.0);
-  width: 600px;
+  width: 700px;
   height: 100%;
   float: right;
   margin: 0 100px;
@@ -35,6 +34,10 @@ a {
   margin: 40px 0px 20px -80px;
   font-size: 32px;
   /*border: 1px solid red;*/
+}
+
+.right-content {
+  overflow: auto;
 }
 
 .item .pic {
@@ -68,5 +71,5 @@ a {
 }
 
 .hashtag {
-  color: #999999;
+  color: #ca1a69;
 }

@@ -44,15 +44,11 @@ a {
 .item .pic {
   float: left;
   padding-right: 10px;
-}
-
-.item .pic img {
   border: 6px solid #ffffff;
   border-radius: 6px;
   width: 150px;
   height: 150px;
 }
-
 
 .author .screen-name {
   font-weight: bold;

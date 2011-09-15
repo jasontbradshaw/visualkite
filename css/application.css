@@ -1,6 +1,6 @@
 html {
   height: 100%;
-  font-family: "Helvetica Neue", helvetica, arial, sans-serif;
+  font-family: "Helvetica Neue", "News Cycle", helvetica, arial, sans-serif;
 }
 
 body {
@@ -34,7 +34,6 @@ a {
   padding: 20px 20px;
   margin: 20px 0px 20px -80px;
   font-size: 32px;
-  /*border: 1px solid red;*/
 }
 
 .right-content {
@@ -48,11 +47,13 @@ a {
   border-radius: 6px;
   width: 150px;
   height: 150px;
+  background-size: 100%;
 }
 
 .author .screen-name {
   font-weight: bold;
   color: #ca1a69;
+  margin-right: 5px;
 }
 
 .author .author-name {

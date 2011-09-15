@@ -62,6 +62,7 @@ a {
 
 .item .text {
   color: #111111;
+  overflow: hidden;
 }
 
 .item .details {

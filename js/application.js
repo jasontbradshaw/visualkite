@@ -19,10 +19,14 @@ $(function () {
     };
 
     var pushTweet = function (tweet) {
+        // get a larger pic than the default profile pic
+        var pic_url = tweet.user.profile_image_url
+                .replace("normal", "reasonably_small");
+
         // build the dom tweet item
         var item = dom("div", "item");
         var pic = dom("div", "pic").css("background-image",
-                "url('" + tweet.user.profile_image_url + "')");
+                "url('" + pic_url + "')");
         var rightContent = dom("div", "right-content");
         var author = dom("div", "author");
         var screenName = dom("span", "screen-name").text(tweet.user.screen_name);

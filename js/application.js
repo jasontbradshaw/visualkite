@@ -19,6 +19,7 @@ $(function () {
     };
 
     var pushTweet = function (tweet) {
+        // build the dom tweet item
         var item = dom("div", "item");
         var pic = dom("div", "pic").css("background-image",
                 "url('" + tweet.user.profile_image_url + "')");
@@ -28,7 +29,7 @@ $(function () {
         var authorName = dom("span", "author-name").text(tweet.user.name);
         var text = dom("div", "text").text(tweet.text);
 
-        // add all the items where they're supposed to go
+        // add all the elements where they're supposed to go
         item.append(pic);
         item.append(rightContent);
         rightContent.append(author);
@@ -36,7 +37,7 @@ $(function () {
         author.append(authorName);
         rightContent.append(text);
 
-        // Delete before inserting.
+        // delete before inserting
         var overflowLength = $(".stream .item").length - 3;
         if(overflowLength >= 0) {
             $(".stream .item:lt(" + (overflowLength+1) + ")").remove();

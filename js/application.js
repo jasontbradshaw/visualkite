@@ -44,11 +44,10 @@ $(function () {
         // delete before inserting
         var overflowLength = $(".stream .item").length - 3;
         if(overflowLength >= 0) {
-            //$(".stream .item:lt(" + (overflowLength+1) + ")").remove();
-            $(".stream .item:lt(" + (overflowLength+1) + ")").slideUp("slow", function() { $(this).remove(); $(".stream").append(item);
-} );
-            //$(".stream .item:lt(" + (overflowLength+1) + ")").slideUp("slow");
-            //$('.item').filter(function(index){return index == 0;}).slideUp("slow");
+            $(".stream .item:lt(" + (overflowLength+1) + ")").slideUp("slow", function() {
+                $(this).remove();
+                $(".stream").append(item);
+            });
         } else {
             $(".stream").append(item);
         }

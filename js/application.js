@@ -1,5 +1,6 @@
 $(function () {
     var visKite = {sinceId: '?', getTweetsTimeoutId: ''};
+    window.localStorage.setItem('tweets', JSON.stringify([{"coordinates":null,"favorited":false,"truncated":false,"created_at":"Wed Sep 21 01:14:37 +0000 2011","id_str":"116319388340207616","in_reply_to_user_id_str":null,"entities":{"urls":[],"hashtags":[],"user_mentions":[]},"entity_id":"116319388340207616","order_id":"116319388340207616","text":"AHH. I have so missed Glee.","contributors":null,"in_reply_to_status_id_str":null,"retweet_count":0,"id":116319388340207616,"geo":null,"retweeted":false,"in_reply_to_user_id":null,"in_reply_to_screen_name":null,"user":{"profile_sidebar_border_color":"181A1E","profile_background_tile":true,"profile_sidebar_fill_color":"252429","name":"Kristen Hall","profile_image_url":"http://a0.twimg.com/profile_images/1201159742/Photo_350_normal.jpg","location":"Muncie","created_at":"Thu Feb 11 00:16:29 +0000 2010","is_translator":false,"follow_request_sent":null,"id_str":"113184808","profile_link_color":"2FC2EF","contributors_enabled":false,"url":"http://thebeautydiaries-quehall.blogspot.com","favourites_count":15,"default_profile":false,"profile_image_url_https":"https://si0.twimg.com/profile_images/1201159742/Photo_350_normal.jpg","utc_offset":-21600,"id":113184808,"listed_count":1,"profile_use_background_image":true,"profile_text_color":"666666","followers_count":141,"lang":"en","protected":false,"notifications":null,"profile_background_color":"1A1B1F","time_zone":"Central Time (US & Canada)","verified":false,"description":"Self-diagnosed Beauty Addict; Amateur Foodie; Professional Cat Snuggler; Social Networking Extraordinaire.","profile_background_image_url_https":"https://si0.twimg.com/profile_background_images/235390821/241-CharcoalDamask.jpg","geo_enabled":true,"default_profile_image":false,"statuses_count":6737,"profile_background_image_url":"http://a1.twimg.com/profile_background_images/235390821/241-CharcoalDamask.jpg","friends_count":245,"following":null,"show_all_inline_media":true,"screen_name":"que_hall"},"source":"<a href=\"http://www.tweetdeck.com\" rel=\"nofollow\">TweetDeck</a>","place":null,"score":"116319388340207616","in_reply_to_status_id":null}]));
 
     // create a DOM element with optional class and id
     var dom = function (elementName, clazz, id) {
@@ -76,6 +77,12 @@ $(function () {
                 {limit: 3, since_id: visKite.sinceId}, receiveTweets);
     };
 
+    var injectOldTweets = function () {
+        pushTweet(JSON.parse(window.localStorage['tweets'])[0]);
+    };
+
+    injectOldTweets();
+    
     // start the whole beast in motion
     getTweets();
 });

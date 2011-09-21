@@ -64,3 +64,32 @@ describe("Carousel", function () {
     });
   });
 });
+
+describe("StoredQueue", function () {
+  var storedQueue;
+
+  beforeEach(function () {
+    storedQueue = new StoredQueue('test');
+  });
+
+  describe("key", function () {
+    it("should build key properly", function () {
+      expect(storedQueue._key('myattribute')).toEqual('StoredQueue.test.myattribute');
+      expect(storedQueue._key('')).toEqual('StoredQueue.test');
+      expect(storedQueue._key(null)).toEqual('StoredQueue.test');
+      expect(storedQueue._key(undefined)).toEqual('StoredQueue.test');
+    });
+  });
+
+  describe("length", function () {
+    it("should be zero if empty", function () {
+      expect(storedQueue.length()).toEqual(0);
+    });
+
+    it("should be the right size", function () {
+      storedQueue.push({id: 1});
+      storedQueue.push({id: 2});
+      expect(storedQueue.length()).toEqual(2);
+    });
+  });
+});

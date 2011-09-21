@@ -42,12 +42,13 @@ a {
 
 .item .pic {
   float: left;
-  padding-right: 10px;
+  margin-right: 10px;
   border: 6px solid #ffffff;
   border-radius: 6px;
   width: 150px;
   height: 150px;
   background-size: 100%;
+  background-color: #ffffff;
 }
 
 .author .screen-name {

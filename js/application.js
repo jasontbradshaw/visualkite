@@ -51,7 +51,8 @@ $(function () {
         // delete before inserting
         var overflowLength = $(".stream .item").length - 3;
         if(overflowLength >= 0) {
-            $(".stream .item:lt(" + (overflowLength+1) + ")").slideUp("slow", function() {
+            $(".stream .item:lt(" + (overflowLength + 1) + ")")
+                .slideUp("slow", function() {
                 $(this).remove();
                 $(".stream").append(item);
             });

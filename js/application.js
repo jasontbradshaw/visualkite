@@ -75,7 +75,7 @@ $(function () {
     var getTweets = function () {
         // TODO: need to bump limit 3, and use a queue instead.
         visKite.getTweetsTimeoutId = setTimeout(getTweets, 3000);
-        $.getJSON("http://tweetriver.com/massrelevance/glee.json?&callback=?",
+        $.getJSON("http://tweetriver.com/ElbenShira/kite-test.json?&callback=?",
                 {limit: 3, since_id: visKite.sinceId}, receiveTweets);
     };
 

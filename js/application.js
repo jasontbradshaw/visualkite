@@ -20,18 +20,25 @@ $(function () {
 
     var pushTweet = function (tweet) {
         // get a larger pic than the default profile pic
-        var pic_url = tweet.user.profile_image_url
+        var picUrl = tweet.user.profile_image_url
                 .replace("normal", "reasonably_small");
 
         // build the dom tweet item
         var item = dom("div", "item");
-        var pic = dom("div", "pic").css("background-image",
-                "url('" + pic_url + "')");
+        var pic = dom("canvas", "pic");
         var rightContent = dom("div", "right-content");
         var author = dom("div", "author");
         var screenName = dom("span", "screen-name").text(tweet.user.screen_name);
         var authorName = dom("span", "author-name").text(tweet.user.name);
         var text = dom("div", "text").text(tweet.text);
+
+        // draw the profile image onto the pic canvas (prevents gif animations)
+        var profilePic = new Image();
+        profilePic.src = picUrl;
+        var picContext = pic[0].getContext("2d");
+        profilePic.onload = function () {
+            picContext.drawImage(profilePic, 0, 0, 400, 200);
+        };
 
         // add all the elements where they're supposed to go
         item.append(pic);

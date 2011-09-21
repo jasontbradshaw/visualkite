@@ -18,6 +18,8 @@ $(function () {
         return newElement;
     };
 
+
+    // create a tweet and add it to the display queue
     var pushTweet = function (tweet) {
         // get a larger pic than the default profile pic
         var picUrl = tweet.user.profile_image_url
@@ -50,7 +52,7 @@ $(function () {
 
         // delete before inserting
         var overflowLength = $(".stream .item").length - 3;
-        if(overflowLength >= 0) {
+        if (overflowLength >= 0) {
             $(".stream .item:lt(" + (overflowLength + 1) + ")")
                 .slideUp("slow", function() {
                 $(this).remove();
@@ -64,7 +66,7 @@ $(function () {
     var receiveTweets = function (tweets) {
         $.each(tweets, function(i, tweet) {
             pushTweet(tweet);
-            if(i == 0) {
+            if (i == 0) {
                 visKite.sinceId = tweet.order_id;
             }
         });

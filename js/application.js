@@ -91,5 +91,7 @@ $(function () {
     };
 
     getTweets();
+    renderTweet(carousel.next());
+    renderTweet(carousel.next());
     run();
 });

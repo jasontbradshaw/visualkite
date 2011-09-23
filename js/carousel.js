@@ -1,22 +1,33 @@
 // A carousel of items for the stream. Only supports tweets right now.
+//
+// Optional params:
+//
+//  max: max number of items. Entries will be deleted on overflow.
 
-function Carousel() {
-  var historyQueue = new Queue();
-  var upcomingQueue = new Queue();
+function Carousel(options) {
+  var historyQueue = new StoredQueue('carousel.history');
+  var upcomingQueue = new StoredQueue('carousel.upcoming');
+
+  var unboundedLength = true;
+  var maxItems;
+  if(typeof options != "undefined" && options['max']) {
+    maxItems = options['max'];
+    unboundedLength = false;
+  }
 
   this.push = function (item) {
-    upcomingQueue.enqueue(item);
+    upcomingQueue.push(item);
   };
 
   this.next = function () {
     var item = undefined;
     if(!upcomingQueue.isEmpty()) {
       item = upcomingQueue.peek();
-      historyQueue.enqueue(upcomingQueue.dequeue());
+      historyQueue.push(upcomingQueue.pop());
     } else if(!historyQueue.isEmpty()) {
       // Nothing in upcoming queue.
-      item = historyQueue.dequeue();
-      historyQueue.enqueue(item);
+      item = historyQueue.pop();
+      historyQueue.push(item);
     }
     return item;
   };
@@ -26,11 +37,35 @@ function Carousel() {
   };
 
   this.length = function () {
-    return historyQueue.getLength() + upcomingQueue.getLength();
+    return historyQueue.length() + upcomingQueue.length();
+  };
+
+  // Removes items if number of items is above maxItems.
+  // Deletion order is semi-arbitrary; it deletes the items in front of the
+  // historyQueue.
+  //
+  // TODO to delete always the earliest-pushed items, we can use three queues.
+  this.trim = function (max) {
+    if(typeof max == "undefined") {
+      max = maxItems;
+    }
+    if(this.length() > max) {
+      // Delete stuff from the historyQueue first.
+      var toDelete = this.length() - max;
+      var toDeleteFromUpcoming = toDelete - historyQueue.length();
+      while(toDelete > 0 && !historyQueue.isEmpty()) {
+        historyQueue.pop();
+        --toDelete;
+      }
+      while(toDelete > 0 && !upcomingQueue.isEmpty()) {
+        upcomingQueue.pop();
+        --toDelete;
+      }
+    }
   };
 
   this._pushToHistory = function (item) {
-    historyQueue.enqueue(item);
+    historyQueue.push(item);
   }
 };
 
@@ -49,10 +84,19 @@ function StoredQueue(name) {
     return this.queue().length;
   };
 
+  this.isEmpty = function () {
+    return this.length() == 0;
+  };
+
   this.push = function (item) {
     var queue = this.queue();
     queue.push(item);
     storage.set('queue', queue);
+  };
+
+  this.peek = function () {
+    if(this.isEmpty()) return undefined;
+    return this.queue()[0];
   };
 
   this.pop = function () {

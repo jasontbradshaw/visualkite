@@ -25,7 +25,7 @@ describe("Carousel", function () {
         carousel._pushToHistory({'id': 3});
       });
 
-      it("should carousel right order", function () {
+      it("should carousel in the right order", function () {
         expect(carousel.next()).toEqual({'id': 1});
         expect(carousel.next()).toEqual({'id': 2});
         expect(carousel.next()).toEqual({'id': 3});
@@ -61,6 +61,110 @@ describe("Carousel", function () {
         expect(carousel.next()).toEqual({'id': 3});
         expect(carousel.next()).toEqual({'id': 4});
       });
+    });
+  });
+
+  describe("trim", function () {
+    it("should trim history elements first", function () {
+      for(var i = 0; i < 3; ++i) {
+        carousel.push({id: i});
+      }
+
+      carousel.next(); // upcoming: [1, 2], history: [0]
+      carousel.trim(1);
+
+      expect(carousel.length()).toEqual(1);
+      expect(carousel.next()).toEqual({id: 2});
+    });
+
+    it("should trim earliest-pushed elements first", function () {
+      for(var i = 0; i < 3; ++i) {
+        carousel.push({id: i});
+      }
+
+      carousel.next(); // upcoming: [1, 2]  history: [0]
+      carousel.next(); // upcoming:    [2]  history: [0, 1]
+      carousel.next(); // upcoming:     []  history: [0, 1, 2]
+      carousel.next(); // upcoming:     []  history: [1, 2, 0]
+      carousel.trim(1);
+
+      expect(carousel.length()).toEqual(1);
+      // TODO this will fail because time-sensitive trimming is not implemented.
+      expect(carousel.next()).toEqual({id: 2});
+    });
+  });
+
+  describe("with bounded length", function () {
+    beforeEach(function () {
+      carousel = new Carousel({max: 3});
+    });
+  });
+});
+
+describe("StoredQueue", function () {
+  var storage;
+
+  beforeEach(function () {
+    storage = new StoredQueue("myqueue");
+  });
+
+  describe("length", function () {
+    it("should be zero if empty", function () {
+      expect(storage.length()).toEqual(0);
+    });
+
+    it("should be the right size", function () {
+      storage.push({id: 1});
+      storage.push({id: 2});
+      expect(storage.length()).toEqual(2);
+    });
+  });
+
+  describe("isEmpty", function () {
+    it("should be true when empty", function () {
+      expect(storage.isEmpty()).toBeTruthy();
+
+      storage.push({});
+      storage.pop();
+      expect(storage.isEmpty()).toBeTruthy();
+    });
+
+    it("should be false when not empty", function () {
+      storage.push("");
+      expect(storage.isEmpty()).toBeFalsy();
+    });
+  });
+
+  describe("pop", function () {
+    it("should return undefined if queue is empty", function () {
+      expect(storage.pop()).toEqual(undefined);
+      expect(storage.length()).toEqual(0);
+    });
+
+    it("should return in FIFO order", function () {
+      storage.push({id: 1});
+      storage.push({id: 2});
+      expect(storage.pop()).toEqual({id: 1});
+      expect(storage.pop()).toEqual({id: 2});
+    });
+  });
+
+  describe("push", function () {
+    it("should push a lot of types", function () {
+      storage.push(undefined);
+      storage.push(null);
+      storage.push("");
+      storage.push({a: [1, 2, {b: 3}]});
+      storage.push(undefined);
+
+      expect(storage.pop()).toEqual(undefined);
+      expect(storage.pop()).toEqual(null);
+      expect(storage.pop()).toEqual("");
+      expect(storage.pop()).toEqual({a: [1, 2, {b: 3}]});
+      expect(storage.pop()).toEqual(undefined);
+      expect(storage.length()).toEqual(0);
+      expect(storage.pop()).toEqual(undefined);
+      expect(storage.length()).toEqual(0);
     });
   });
 });
@@ -133,7 +237,6 @@ describe("LocalStorage", function () {
     it("should return undefined if attribute does not exist", function () {
       expect(storage.json('myattribute')).toEqual(undefined);
     });
-
     it("should increment floats", function () {
       storage.set('myattribute', 32.2);
       expect(storage.incr('myattribute')).toEqual(33.2);
@@ -144,26 +247,6 @@ describe("LocalStorage", function () {
       storage.set('myattribute', 32);
       expect(storage.incr('myattribute')).toEqual(33);
       expect(storage.get('myattribute')).toEqual('33');
-    });
-  });
-});
-
-describe("StoredQueue", function () {
-  var storage;
-
-  beforeEach(function () {
-    storage = new StoredQueue("myqueue");
-  });
-
-  describe("length", function () {
-    it("should be zero if empty", function () {
-      expect(storage.length()).toEqual(0);
-    });
-
-    it("should be the right size", function () {
-      storage.push({id: 1});
-      storage.push({id: 2});
-      expect(storage.length()).toEqual(2);
     });
   });
 });

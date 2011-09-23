@@ -4,7 +4,7 @@ describe("Carousel", function () {
   var carousel;
 
   beforeEach(function () {
-    carousel = new Carousel();
+    carousel = new Carousel({useExistingData: false});
   });
 
   describe("length", function () {
@@ -95,8 +95,9 @@ describe("Carousel", function () {
   });
 
   describe("with bounded length", function () {
+    // TODO
     beforeEach(function () {
-      carousel = new Carousel({max: 3});
+      carousel = new Carousel({max: 3, useExistingData: false});
     });
   });
 });
@@ -105,7 +106,7 @@ describe("StoredQueue", function () {
   var storage;
 
   beforeEach(function () {
-    storage = new StoredQueue("myqueue");
+    storage = new StoredQueue("myqueue", {useExistingData: false});
   });
 
   describe("length", function () {
@@ -167,13 +168,17 @@ describe("StoredQueue", function () {
       expect(storage.length()).toEqual(0);
     });
   });
+
+  xdescribe("using old data", function () {
+    // TODO
+  });
 });
 
 describe("LocalStorage", function () {
   var storage;
 
   beforeEach(function () {
-    storage = new LocalStorage('my.test');
+    storage = new LocalStorage('my.test', {useExistingData: false});
   });
 
   afterEach(function () {

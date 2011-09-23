@@ -5,8 +5,8 @@
 //  max: max number of items. Entries will be deleted on overflow.
 
 function Carousel(options) {
-  var historyQueue = new StoredQueue('carousel.history');
-  var upcomingQueue = new StoredQueue('carousel.upcoming');
+  var historyQueue = new StoredQueue('carousel.history', options);
+  var upcomingQueue = new StoredQueue('carousel.upcoming', options);
 
   var unboundedLength = true;
   var maxItems;

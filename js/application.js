@@ -80,7 +80,7 @@ $(function () {
     // Pull new tweets every 3 seconds.
     var getTweets = function () {
         setTimeout(getTweets, 3000);
-        $.getJSON("http://tweetriver.com/massrelevance/glee.json?&callback=?",
+        $.getJSON("http://tweetriver.com/ElbenShira/kite-test.json?&callback=?",
                 {limit: 3, since_id: visKite.sinceId}, pushTweets);
     };
 

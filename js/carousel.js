@@ -72,9 +72,21 @@ function Carousel(options) {
 
 // Queue implementation using LocalStorage.
 
-function StoredQueue(name) {
+function StoredQueue(name, options) {
+  if(typeof(name) == "undefined") {
+    name = (new Date()).getTime();
+  }
+
+  if(typeof(options) == "undefined") {
+    options = {};
+    options.useExistingData = true;
+  }
+
   var storage = new LocalStorage('StoredQueue.' + name);
-  storage.set('queue', []);
+
+  if(!options.useExistingData) {
+    storage.set('queue', []);
+  }
 
   this.queue = function () {
     return storage.json('queue');

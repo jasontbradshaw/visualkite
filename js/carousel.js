@@ -17,6 +17,7 @@ function Carousel(options) {
 
   this.push = function (item) {
     upcomingQueue.push(item);
+    this.trim();
   };
 
   this.next = function () {

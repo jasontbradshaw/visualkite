@@ -95,9 +95,20 @@ describe("Carousel", function () {
   });
 
   describe("with bounded length", function () {
-    // TODO
+    var max = 3;
     beforeEach(function () {
-      carousel = new Carousel({max: 3, useExistingData: false});
+      carousel = new Carousel({max: max, useExistingData: false});
+    });
+
+    it("should not excede max count", function () {
+      for(var i = 0; i < 2*max; ++i) {
+        carousel.push({id: i});
+      }
+      expect(carousel.length()).toEqual(3);
+    });
+
+    // TODO
+    xit("should delete from history first", function () {
     });
   });
 });
@@ -170,7 +181,9 @@ describe("StoredQueue", function () {
   });
 
   xdescribe("using old data", function () {
-    // TODO
+    // TODO we have data in local storage, it should load it
+    xit("should use existing local storage", function () {
+    });
   });
 });
 

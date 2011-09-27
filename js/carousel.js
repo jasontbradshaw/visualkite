@@ -78,8 +78,11 @@ function StoredQueue(name, options) {
     name = (new Date()).getTime();
   }
 
+  // Default options
   if(typeof(options) == "undefined") {
     options = {};
+  }
+  if(typeof(options.useExistingData) == "undefined") {
     options.useExistingData = true;
   }
 

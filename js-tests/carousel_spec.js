@@ -114,75 +114,90 @@ describe("Carousel", function () {
 });
 
 describe("StoredQueue", function () {
-  var storage;
+  var queue;
 
   beforeEach(function () {
-    storage = new StoredQueue("myqueue", {useExistingData: false});
+    queue = new StoredQueue("myqueue", {useExistingData: false});
   });
 
   describe("length", function () {
     it("should be zero if empty", function () {
-      expect(storage.length()).toEqual(0);
+      expect(queue.length()).toEqual(0);
     });
 
     it("should be the right size", function () {
-      storage.push({id: 1});
-      storage.push({id: 2});
-      expect(storage.length()).toEqual(2);
+      queue.push({id: 1});
+      queue.push({id: 2});
+      expect(queue.length()).toEqual(2);
     });
   });
 
   describe("isEmpty", function () {
     it("should be true when empty", function () {
-      expect(storage.isEmpty()).toBeTruthy();
+      expect(queue.isEmpty()).toBeTruthy();
 
-      storage.push({});
-      storage.pop();
-      expect(storage.isEmpty()).toBeTruthy();
+      queue.push({});
+      queue.pop();
+      expect(queue.isEmpty()).toBeTruthy();
     });
 
     it("should be false when not empty", function () {
-      storage.push("");
-      expect(storage.isEmpty()).toBeFalsy();
+      queue.push("");
+      expect(queue.isEmpty()).toBeFalsy();
     });
   });
 
   describe("pop", function () {
     it("should return undefined if queue is empty", function () {
-      expect(storage.pop()).toEqual(undefined);
-      expect(storage.length()).toEqual(0);
+      expect(queue.pop()).toEqual(undefined);
+      expect(queue.length()).toEqual(0);
     });
 
     it("should return in FIFO order", function () {
-      storage.push({id: 1});
-      storage.push({id: 2});
-      expect(storage.pop()).toEqual({id: 1});
-      expect(storage.pop()).toEqual({id: 2});
+      queue.push({id: 1});
+      queue.push({id: 2});
+      expect(queue.pop()).toEqual({id: 1});
+      expect(queue.pop()).toEqual({id: 2});
     });
   });
 
   describe("push", function () {
     it("should push a lot of types", function () {
-      storage.push(undefined);
-      storage.push(null);
-      storage.push("");
-      storage.push({a: [1, 2, {b: 3}]});
-      storage.push(undefined);
+      queue.push(undefined);
+      queue.push(null);
+      queue.push("");
+      queue.push({a: [1, 2, {b: 3}]});
+      queue.push(undefined);
 
-      expect(storage.pop()).toEqual(undefined);
-      expect(storage.pop()).toEqual(null);
-      expect(storage.pop()).toEqual("");
-      expect(storage.pop()).toEqual({a: [1, 2, {b: 3}]});
-      expect(storage.pop()).toEqual(undefined);
-      expect(storage.length()).toEqual(0);
-      expect(storage.pop()).toEqual(undefined);
-      expect(storage.length()).toEqual(0);
+      expect(queue.pop()).toEqual(undefined);
+      expect(queue.pop()).toEqual(null);
+      expect(queue.pop()).toEqual("");
+      expect(queue.pop()).toEqual({a: [1, 2, {b: 3}]});
+      expect(queue.pop()).toEqual(undefined);
+      expect(queue.length()).toEqual(0);
+      expect(queue.pop()).toEqual(undefined);
+      expect(queue.length()).toEqual(0);
     });
   });
 
-  xdescribe("using old data", function () {
-    // TODO we have data in local storage, it should load it
-    xit("should use existing local storage", function () {
+  describe("using old data", function () {
+    beforeEach(function () {
+      queue.push({id: 1});
+      queue.push({id: 10});
+    });
+
+    it("should use existing local storage by default", function () {
+      queue = new StoredQueue("myqueue", {max: 3});
+      expect(queue.length()).toEqual(2);
+      expect(queue.pop()).toEqual({id: 1});
+      expect(queue.pop()).toEqual({id: 10});
+      expect(queue.pop()).toEqual(undefined);
+    });
+
+    it("should use clear existing local storage if not useExistingData", function () {
+      queue = new StoredQueue("myqueue", {useExistingData: false});
+      expect(queue.length()).toEqual(0);
+      expect(queue.pop()).toEqual(undefined);
     });
   });
 });

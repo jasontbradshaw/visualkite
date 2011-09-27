@@ -82,13 +82,13 @@ function StoredQueue(name, options) {
   if(typeof(options) == "undefined") {
     options = {};
   }
-  if(typeof(options.useExistingData) == "undefined") {
-    options.useExistingData = true;
+  if(typeof(options.clearExistingData) == "undefined") {
+    options.clearExistingData = false;
   }
 
   var storage = new LocalStorage('StoredQueue.' + name);
 
-  if(!options.useExistingData) {
+  if(options.clearExistingData || storage.json('queue') == undefined) {
     storage.set('queue', []);
   }
 

@@ -4,7 +4,8 @@ describe("Carousel", function () {
   var carousel;
 
   beforeEach(function () {
-    carousel = new Carousel({useExistingData: false});
+    window.localStorage.clear();
+    carousel = new Carousel({clearExistingData: true});
   });
 
   describe("length", function () {
@@ -97,7 +98,7 @@ describe("Carousel", function () {
   describe("with bounded length", function () {
     var max = 3;
     beforeEach(function () {
-      carousel = new Carousel({max: max, useExistingData: false});
+      carousel = new Carousel({max: max, clearExistingData: true});
     });
 
     it("should not excede max count", function () {
@@ -117,7 +118,8 @@ describe("StoredQueue", function () {
   var queue;
 
   beforeEach(function () {
-    queue = new StoredQueue("myqueue", {useExistingData: false});
+    window.localStorage.clear();
+    queue = new StoredQueue("myqueue", {clearExistingData: true});
   });
 
   describe("length", function () {
@@ -194,8 +196,8 @@ describe("StoredQueue", function () {
       expect(queue.pop()).toEqual(undefined);
     });
 
-    it("should use clear existing local storage if not useExistingData", function () {
-      queue = new StoredQueue("myqueue", {useExistingData: false});
+    it("should use clear existing local storage if clearExistingData", function () {
+      queue = new StoredQueue("myqueue", {clearExistingData: true});
       expect(queue.length()).toEqual(0);
       expect(queue.pop()).toEqual(undefined);
     });
@@ -206,7 +208,8 @@ describe("LocalStorage", function () {
   var storage;
 
   beforeEach(function () {
-    storage = new LocalStorage('my.test', {useExistingData: false});
+    window.localStorage.clear();
+    storage = new LocalStorage('my.test', {clearExistingData: true});
   });
 
   afterEach(function () {

@@ -122,6 +122,22 @@ describe("StoredQueue", function () {
     queue = new StoredQueue("myqueue", {clearExistingData: true});
   });
 
+  describe("queue", function () {
+    // Needed to clear the previous queue in beforeEach
+    beforeEach(function () {
+      window.localStorage.clear();
+    });
+    it("should be initialized when clearing data", function () {
+      queue = new StoredQueue("myqueue", {clearExistingData: true});
+      expect(queue.queue()).toEqual([]);
+    });
+
+    it("should be initialized when using old data", function () {
+      queue = new StoredQueue("myqueue", {clearExistingData: false});
+      expect(queue.queue()).toEqual([]);
+    });
+  });
+
   describe("length", function () {
     it("should be zero if empty", function () {
       expect(queue.length()).toEqual(0);

@@ -88,15 +88,15 @@ $(function () {
     rightContent.append(text);
 
     // draw the profile image onto the pic canvas (prevents gif animations)
-    var profilePic = new Image();
-    profilePic.src = picUrl;
-    profilePic.onload = function () {
-      var picContext = pic[0].getContext("2d");
-      picContext.drawImage(profilePic, 0, 0, 300, 150);
+    var profilePic = dom("img");
+    profilePic.attr("src",picUrl);
+    profilePic.load(function () {
+      var canvas = pic[0].getContext("2d");
+      canvas.drawImage(profilePic[0], 0, 0, 300, 150);
 
       // load the tweet item into the stream once its pic has been rendered
       insertToStream(item, 'down');
-    };
+    });
   };
 
   // Push tweets into carousel.

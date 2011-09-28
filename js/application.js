@@ -1,5 +1,15 @@
 $(function () {
-  var visKite = {sinceId: '?', maxItems: 3};
+  var visKiteDefaults = {
+    sinceId: '?',
+    maxItems: 3,
+    rotateTimeout: 5000,
+    getItemsTimeout: 3000,
+    paused: false,
+    rotateTimeoutId: 0,
+    getItemsTimeoutId: 0
+  };
+
+  var visKite = deepCopy(visKiteDefaults);
 
   var carousel = new Carousel({max: 10});
   // TODO refactor how old tweets are initialized into carousel;wa
@@ -100,19 +110,67 @@ $(function () {
 
   // Pull new tweets every 3 seconds.
   var getTweets = function () {
-    setTimeout(getTweets, 3000);
+    if(!visKite.paused) {
+      visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
+    }
     $.getJSON("http://tweetriver.com/ElbenShira/kite-test.json?&callback=?",
         {limit: 3, since_id: visKite.sinceId}, pushTweets);
   };
 
-  // This runs the carousel. Rotates every 3 seconds.
-  var run = function () {
-    setTimeout(run, 3000);
+  // This rotates the carousel. Rotates every 3 seconds.
+  var rotate = function () {
+    if(!visKite.paused) {
+      visKite.rotateTimeoutId = setTimeout(rotate, visKite.rotateTimeout);
+    }
     renderTweet(carousel.next());
   };
 
   getTweets();
   renderTweet(carousel.next());
   renderTweet(carousel.next());
-  run();
+  rotate();
+
+  ///////////////////
+  // Debug Bar
+  ///////////////////
+
+  var setupDebugBar = function () {
+    $("#debug-bar").mouseenter(function () {
+      $("#debug-bar").addClass("mouseenter");
+    });
+    $("#debug-bar").mouseleave(function () {
+      $("#debug-bar").removeClass("mouseenter");
+    });
+    $("#debug-pause-button").click(function () {
+      if(visKite.paused == undefined) {
+        visKite.paused = false;
+      }
+
+      if(visKite.paused) {
+        // Resume!
+        visKite.getItemsTimeoutId = setTimeout(rotate, visKite.rotateTimeout);
+        visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
+        $("#debug-pause-button a").text("Pause");
+      } else {
+        // Pause!
+        console.log("getItemsTimeoutId: " + visKite.getItemsTimeoutId);
+        console.log("rotateTimeoutId: " + visKite.rotateTimeoutId);
+        clearTimeout(visKite.getItemsTimeoutId);
+        clearTimeout(visKite.rotateTimeoutId);
+        $("#debug-pause-button a").text("Resume");
+      }
+
+      visKite.paused = !visKite.paused;
+    });
+  };
+
+  setupDebugBar();
 });
+
+var shallowCopy = function (o) {
+  return $.extend({}, o);
+}
+
+var deepCopy = function (o) {
+  return $.extend(true, {}, o);
+}

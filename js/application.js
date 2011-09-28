@@ -79,14 +79,6 @@ $(function () {
     var authorName = dom("span", "author-name").text(tweet.user.name);
     var text = dom("div", "text").text(tweet.text);
 
-    // draw the profile image onto the pic canvas (prevents gif animations)
-    var profilePic = new Image();
-    profilePic.src = picUrl;
-    var picContext = pic[0].getContext("2d");
-    profilePic.onload = function () {
-      picContext.drawImage(profilePic, 0, 0, 400, 200);
-    };
-
     // add all the elements where they're supposed to go
     item.append(pic);
     item.append(rightContent);
@@ -95,7 +87,16 @@ $(function () {
     author.append(authorName);
     rightContent.append(text);
 
-    insertToStream(item, 'down');
+    // draw the profile image onto the pic canvas (prevents gif animations)
+    var profilePic = new Image();
+    profilePic.src = picUrl;
+    profilePic.onload = function () {
+      var picContext = pic[0].getContext("2d");
+      picContext.drawImage(profilePic, 0, 0, 300, 150);
+
+      // load the tweet item into the stream once its pic has been rendered
+      insertToStream(item, 'down');
+    };
   };
 
   // Push tweets into carousel.

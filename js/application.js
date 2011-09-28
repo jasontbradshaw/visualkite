@@ -1,5 +1,5 @@
 $(function () {
-  var visKite = {sinceId: '?', maxItems: 4};
+  var visKite = {sinceId: '?', maxItems: 3};
 
   var carousel = new Carousel({max: 10});
   // TODO refactor how old tweets are initialized into carousel;wa
@@ -22,6 +22,38 @@ $(function () {
     return newElement;
   };
 
+  // direction can be 'down' or 'up'
+  var insertToStream = function (item, direction) {
+    if(direction == undefined) {
+      direction = 'down';
+    }
+
+    if(direction == 'up') {
+      // Stream goes up. Delete first, then insert.
+      var overflowLength = $(".stream .item").length - visKite.maxItems;
+      if (overflowLength >= 0) {
+        $(".stream .item:lt(" + (overflowLength + 1) + ")")
+          .slideUp("slow", function() {
+            $(this).remove();
+            $(".stream").append(item);
+          });
+      } else {
+        $(".stream").append(item);
+      }
+    } else {
+      // Stream goes down. Insert first, then delete.
+      item.hide(); // so that it slides down nicely.
+      $(".stream").prepend(item);
+      $(".item:eq(0)").slideDown("slow");
+      (function () {
+        // delete overflow
+        var overflowLength = $(".stream .item").length - visKite.maxItems;
+        if (overflowLength >= 0) {
+          $(".stream .item:gt(" + (visKite.maxItems - overflowLength) + ")").fadeOut('slow', function () { $(this).remove(); })
+        }
+      })();
+    };
+  }
 
   // create a tweet and add it to the display queue
   var renderTweet = function (tweet) {
@@ -30,7 +62,7 @@ $(function () {
       .replace("normal", "reasonably_small");
 
     // build the dom tweet item
-    var item = dom("div", "item hidden");
+    var item = dom("div", "item");
     var pic = dom("canvas", "pic");
     var rightContent = dom("div", "right-content");
     var author = dom("div", "author");
@@ -54,15 +86,7 @@ $(function () {
     author.append(authorName);
     rightContent.append(text);
 
-    $(".stream").prepend(item);
-    $(".item:eq(0)").slideDown("slow", function () {
-      // delete overflow
-      var overflowLength = $(".stream .item").length - visKite.maxItems;
-      if (overflowLength >= 0) {
-        $(".stream .item:gt(" + (visKite.maxItems - overflowLength) + ")").remove();
-      }
-    });
-    // TODO keep other direction too
+    insertToStream(item, 'down');
   };
 
   // Push tweets into carousel.

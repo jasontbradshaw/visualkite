@@ -162,6 +162,10 @@ $(function () {
 
       visKite.paused = !visKite.paused;
     });
+
+    $("#debug-clear-carousel-button").click(function () {
+      carousel.clear();
+    });
   };
 
   setupDebugBar();

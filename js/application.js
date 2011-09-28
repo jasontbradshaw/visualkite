@@ -77,7 +77,7 @@ $(function () {
     var author = dom("div", "author");
     var screenName = dom("span", "screen-name").text(tweet.user.screen_name);
     var authorName = dom("span", "author-name").text(tweet.user.name);
-    var text = dom("div", "text").text(tweet.text);
+    var text = buildTweet(tweet.text);
 
     // add all the elements where they're supposed to go
     item.append(pic);
@@ -126,15 +126,6 @@ $(function () {
     renderTweet(carousel.next());
   };
 
-  getTweets();
-  renderTweet(carousel.next());
-  renderTweet(carousel.next());
-  rotate();
-
-  ///////////////////
-  // Debug Bar
-  ///////////////////
-
   var setupDebugBar = function () {
     $("#debug-bar").mouseenter(function () {
       $("#debug-bar").addClass("mouseenter");
@@ -169,6 +160,39 @@ $(function () {
     });
   };
 
+  var buildTweet = function (tweet_text) {
+    var div = dom("div", "text");
+
+    var tokens = tweet_text.split(' ');
+    // TODO bug: multiple spaces will be thrown out
+    // TODO: check for quotes
+    $.each(tokens, function (i, token) {
+      if(token.length > 1) { // we don't want stray '@' and '#'
+        var textBody = token.substring(1, token.length); // for @ and #
+        if(token[0] == "@") {
+          var href = "https://twitter.com/" + token.substring(1, token.length);
+          var at_sign = dom("span").addClass("mention-symbol").text("@");
+          var link = dom("a").attr("href", href).addClass("mention").text(textBody).prepend(at_sign);
+          div.append(link);
+        } else if(token[0] == "#") {
+          var href = "https://twitter.com/#!/search?q=%23" + token.substring(1, token.length);
+          var hash_sign = dom("span").addClass("hashtag-symbol").text("#");
+          var link = dom("a").attr("href", href).addClass("hashtag").text(textBody).prepend(hash_sign);
+          div.append(link);
+        } else {
+          div.append(token);
+        }
+        div.append(" ");
+      }
+    });
+
+    return div;
+  };
+
+  getTweets();
+  renderTweet(carousel.next());
+  renderTweet(carousel.next());
+  rotate();
   setupDebugBar();
 });
 

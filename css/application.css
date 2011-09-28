@@ -17,6 +17,22 @@ a {
   text-decoration: none;
 }
 
+.hashtag {
+  color: #ff56a2;
+}
+
+.mention {
+  color: #ff56a2;
+}
+
+.hashtag-symbol {
+  color: #ffa8cf;
+}
+
+.mention-symbol {
+  color: #ffa8cf;
+}
+
 .stream {
   background-color: rgba(255, 255, 255, 1.0);
   width: 700px;
@@ -73,10 +89,6 @@ a {
 
 .item .details {
   color: #999999;
-}
-
-.hashtag {
-  color: #ca1a69;
 }
 
 #debug-bar {

@@ -126,9 +126,6 @@ function StoredQueue(name, options) {
 }
 
 // LocalStorage is a wrapper around window.localStorage.
-//
-// Requires json2.js.
-
 function LocalStorage(name) {
 
   this._key = function (attribute) {

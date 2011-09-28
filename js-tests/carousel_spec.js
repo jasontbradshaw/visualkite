@@ -95,6 +95,22 @@ describe("Carousel", function () {
     });
   });
 
+  describe("clear", function () {
+    it("should clear", function () {
+      for(var i = 0; i < 3; ++i) {
+        carousel.push({id: i});
+      }
+
+      expect(carousel.length()).toEqual(3);
+
+      carousel.next(); // upcoming: [1, 2]  history: [0]
+      carousel.clear();
+
+      expect(carousel.length()).toEqual(0);
+      expect(carousel.next()).toEqual(undefined);
+    });
+  });
+
   describe("with bounded length", function () {
     var max = 3;
     beforeEach(function () {
@@ -195,6 +211,15 @@ describe("StoredQueue", function () {
       expect(queue.length()).toEqual(0);
       expect(queue.pop()).toEqual(undefined);
       expect(queue.length()).toEqual(0);
+    });
+  });
+
+  describe("clear", function () {
+    it("should clear", function () {
+      queue.push({});
+      queue.clear();
+      expect(queue.length()).toEqual(0);
+      expect(queue.pop()).toEqual(undefined);
     });
   });
 

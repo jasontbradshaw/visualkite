@@ -65,6 +65,11 @@ function Carousel(options) {
     }
   };
 
+  this.clear = function () {
+    historyQueue.clear();
+    upcomingQueue.clear();
+  }
+
   this._pushToHistory = function (item) {
     historyQueue.push(item);
   }
@@ -122,6 +127,10 @@ function StoredQueue(name, options) {
     var item = queue.shift();
     storage.set('queue', queue);
     return item;
+  };
+
+  this.clear = function () {
+    storage.set('queue', []);
   };
 }
 

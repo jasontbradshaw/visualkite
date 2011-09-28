@@ -102,3 +102,7 @@ a {
 #debug-bar.mouseenter a {
   color: #eee;
 }
+
+#debug-bar span.button {
+  padding: 0 10px;
+}

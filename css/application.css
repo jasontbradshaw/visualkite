@@ -17,6 +17,22 @@ a {
   text-decoration: none;
 }
 
+.hashtag {
+  color: #ff56a2;
+}
+
+.mention {
+  color: #ff56a2;
+}
+
+.hashtag-symbol {
+  color: #ffa8cf;
+}
+
+.mention-symbol {
+  color: #ffa8cf;
+}
+
 .stream {
   background-color: rgba(255, 255, 255, 1.0);
   width: 700px;
@@ -34,6 +50,10 @@ a {
   padding: 20px 20px;
   margin: 20px 0px 20px -80px;
   font-size: 32px;
+}
+
+.item.hidden {
+  display: none;
 }
 
 .right-content {
@@ -71,8 +91,32 @@ a {
   color: #999999;
 }
 
-.hashtag {
-  color: #ca1a69;
+#debug-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  color: transparent;
+  padding: 5px;
+}
+
+#debug-bar a {
+  color: transparent;
+}
+
+#debug-bar.mouseenter {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 0 0 6px 0;
+}
+
+#debug-bar.mouseenter a {
+  color: #eee;
+}
+
+#debug-bar span.button {
+  padding: 0 10px;
 }
 
 .promo {

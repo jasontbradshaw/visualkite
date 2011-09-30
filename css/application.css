@@ -74,3 +74,33 @@ a {
 .hashtag {
   color: #ca1a69;
 }
+
+.promo {
+  background-color: rgba(255, 255, 255, 0.85);
+  width: 800px;
+  float: left;
+  margin-left: 100px;
+  padding: 0;
+
+  border-left: 6px solid rgba(84, 77, 71, 0.9);
+  border-right: 6px solid rgba(84, 77, 71, 0.9);
+  border-bottom: 6px solid rgba(84, 77, 71, 0.9);
+
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.promoItem {
+  overflow: auto;
+  padding: 50px 50px;
+  margin: 20px 0px 20px - 80px;
+
+  font-size: 40px;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.promoItem .text {
+  color: #111111;
+  overflow: hidden;
+}

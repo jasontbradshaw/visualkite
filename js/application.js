@@ -18,6 +18,10 @@ $(function () {
         return newElement;
     };
 
+    ////////////
+    // Tweets //
+    ////////////
+
     var pushTweet = function (tweet) {
         // get a larger pic than the default profile pic
         var picUrl = tweet.user.profile_image_url
@@ -76,6 +80,66 @@ $(function () {
                 {limit: 3, since_id: visKite.sinceId}, receiveTweets);
     };
 
-    // start the whole beast in motion
+    ///////////
+    // Promo //
+    ///////////
+
+    var pushPromo = function (tweet) {
+        // build the dom promo item
+        var promoItem = dom("div", "promoItem");
+        var rightContent = dom("div", "right-content");
+        var text = dom("div", "text").text(tweet.text);
+
+        // add all the elements where they're supposed to go
+        promoItem.append(rightContent);
+        rightContent.append(text);
+
+
+        // slide box down
+        $(".promo").slideToggle("slow", function() {
+
+            // if promoItem exists, delete before inserting
+            if ($(".promo .promoItem").length == 1) {
+                $(".promo .promoItem:lt(" + (1) + ")").fadeOut("slow", function() {
+                    $(this).remove();
+                    $(".promo").append(promoItem);
+                });
+            } else {
+                $(".promo").append(promoItem);
+            }
+
+            // slide box up
+            $(".promo").slideToggle("slow");
+        });
+    };
+
+    var receivePromo = function (tweets) {
+        $.each(tweets, function(i, tweet) {
+            pushPromo(tweet);
+            if(i == 0) {
+                visKite.sinceId = tweet.order_id;
+            }
+        });
+    }
+
+    var getPromo = function () {
+        // TODO: what refresh rate do we want
+        visKite.getPromoTimeoutId = setTimeout(getPromo, 60000);
+        // TODO: change address to that of specific company
+        $.getJSON("http://tweetriver.com/massrelevance/glee.json?&callback=?",
+                {limit: 1, since_id: visKite.sinceId}, receivePromo);
+    };
+
+    /////////
+    // Run //
+    /////////
+
+    // create promo area
+    var promo = dom("div", "promo");
+    $("body").append(promo);
+
+    // begin getting tweets and promos
     getTweets();
+    getPromo();
+
 });

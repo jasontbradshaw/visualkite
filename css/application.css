@@ -93,8 +93,8 @@ a {
 
 #debug-bar {
   position: absolute;
-  top: 0;
-  left: 0;
+  bottom: 0;
+  right: 0;
   background-color: transparent;
   color: transparent;
   padding: 5px;
@@ -105,14 +105,14 @@ a {
 }
 
 #debug-bar.mouseenter {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
-  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.75);
+  border-bottom: 2px solid rgba(255, 255, 255, 1.0);
+  border-right: 2px solid rgba(255, 255, 255, 1.0);
   border-radius: 0 0 6px 0;
 }
 
 #debug-bar.mouseenter a {
-  color: #eee;
+  color: #666;
 }
 
 #debug-bar span.button {

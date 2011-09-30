@@ -4,9 +4,11 @@ $(function () {
     maxItems: 3,
     rotateTimeout: 5000,
     getItemsTimeout: 3000,
-    paused: false,
+    promoTimeout: 8000,
     rotateTimeoutId: 0,
-    getItemsTimeoutId: 0
+    getItemsTimeoutId: 0,
+    paused: false,
+    promoEnabled: true
   };
 
   var visKite = deepCopy(visKiteDefaults);
@@ -207,6 +209,11 @@ $(function () {
 
     $("#debug-clear-carousel-button").click(function () {
       carousel.clear();
+    });
+
+    $("#debug-toggle-promo-button").click(function () {
+      $(".promo").toggle();
+      visKite.promoEnabled = !visKite.promoEnabled;
     });
   };
 

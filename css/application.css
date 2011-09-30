@@ -134,7 +134,7 @@ a {
   border-bottom-left-radius: 20px;
 }
 
-.promoItem {
+.promo-item {
   overflow: auto;
   padding: 50px 50px;
   margin: 20px 0px 20px - 80px;
@@ -144,7 +144,7 @@ a {
   text-align: center;
 }
 
-.promoItem .text {
+.promo-item .text {
   color: #111111;
   overflow: hidden;
 }

@@ -105,9 +105,10 @@ $(function () {
   // Promo //
   ///////////
 
-  var pushPromo = function (tweet) {
+  var renderPromo = function (tweets) {
+    var tweet = tweets[0];
     // build the dom promo item
-    var promoItem = dom("div", "promoItem");
+    var promoItem = dom("div", "promo-item");
     var rightContent = dom("div", "right-content");
     var text = dom("div", "text").text(tweet.text);
 
@@ -115,13 +116,12 @@ $(function () {
     promoItem.append(rightContent);
     rightContent.append(text);
 
-
-    // slide box down
-    $(".promo").slideToggle("slow", function() {
+    // box starts up (hidden)
+    $(".promo").slideUp("fast", function() {
 
       // if promoItem exists, delete before inserting
-      if ($(".promo .promoItem").length == 1) {
-        $(".promo .promoItem:lt(" + (1) + ")").fadeOut("slow", function() {
+      if ($(".promo .promo-item").length == 1) {
+        $(".promo .promo-item").fadeOut("slow", function() {
           $(this).remove();
           $(".promo").append(promoItem);
         });
@@ -129,26 +129,20 @@ $(function () {
         $(".promo").append(promoItem);
       }
 
-      // slide box up
-      $(".promo").slideToggle("slow");
+      // slide box down
+      $(".promo").slideDown("slow");
     });
   };
 
-  var receivePromo = function (tweets) {
-    $.each(tweets, function(i, tweet) {
-      pushPromo(tweet);
-      if(i == 0) {
-        visKite.sinceId = tweet.order_id;
-      }
-    });
-  }
-
   var getPromo = function () {
-    // TODO: what refresh rate do we want
-    visKite.getPromoTimeoutId = setTimeout(getPromo, 60000);
-    // TODO: change address to that of specific company
+    visKite.getPromoTimeoutId = setTimeout(getPromo, visKite.promoTimeout);
+
+    if(!visKite.promoEnabled) {
+      return;
+    }
+
     $.getJSON("http://tweetriver.com/massrelevance/glee.json?&callback=?",
-              {limit: 1, since_id: visKite.sinceId}, receivePromo);
+              {limit: 1}, renderPromo);
   };
 
   // Push tweets into carousel.

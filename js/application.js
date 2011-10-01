@@ -70,7 +70,7 @@ $(function () {
   var renderTweet = function (tweet) {
     // get a larger pic than the default profile pic
     var picUrl = tweet.user.profile_image_url
-      .replace("_normal", "");
+      .replace("_normal", "_reasonably_small");
 
     // build the dom tweet item
     var item = dom("div", "item");

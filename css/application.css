@@ -33,13 +33,14 @@ a {
   color: #ffa8cf;
 }
 
+/* 1920 - 1000 = 920 */
 .stream {
   background-color: rgba(255, 255, 255, 1.0);
-  width: 700px;
+  width: 1200px;
   height: 100%;
-  float: right;
+  position: absolute;
   margin: 0 100px;
-  padding: 0;
+  margin-left: 360px;
 
   border-left: 6px solid rgba(200, 200, 200, 0.8);
   border-right: 6px solid rgba(200, 200, 200, 0.8);
@@ -48,8 +49,8 @@ a {
 .item {
   overflow: auto;
   padding: 20px 20px;
-  margin: 20px 0px 20px -80px;
-  font-size: 32px;
+  margin: 40px 0px 40px -80px;
+  font-size: 64px;
 }
 
 .item.hidden {
@@ -62,11 +63,11 @@ a {
 
 .item .pic {
   float: left;
-  margin-right: 10px;
+  margin-right: 20px;
   border: 6px solid #ffffff;
   border-radius: 6px;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 200px;
   background-size: 100%;
   background-color: #eeefff;
 }
@@ -79,7 +80,7 @@ a {
 
 .author .author-name {
   color: #999999;
-  font-size: 18px;
+  font-size: 38px;
 }
 
 .item .text {
@@ -92,6 +93,7 @@ a {
 }
 
 #debug-bar {
+  z-index: 100;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -120,18 +122,23 @@ a {
 }
 
 .promo {
-  background-color: rgba(255, 255, 255, 0.85);
-  width: 800px;
-  float: left;
-  margin-left: 100px;
+  z-index: 2;
+  position: absolute;
+  bottom: 0;
+
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 1600px;
+  /*margin-left: 260px;*/
+  margin-left: -800px;
+  left: 50%;
+
   padding: 0;
 
-  border-left: 6px solid rgba(84, 77, 71, 0.9);
-  border-right: 6px solid rgba(84, 77, 71, 0.9);
-  border-bottom: 6px solid rgba(84, 77, 71, 0.9);
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
 
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+  -webkit-box-shadow: 15px -15px 40px #333;
+  box-shadow: 15px -15px 40px #333;
 }
 
 .promo-item {
@@ -139,8 +146,7 @@ a {
   padding: 50px 50px;
   margin: 20px 0px 20px - 80px;
 
-  font-size: 40px;
-  font-weight: lighter;
+  font-size: 64px;
   text-align: center;
 }
 

@@ -3,7 +3,7 @@ $(function () {
     sinceId: '',
     maxItems: 2,
     rotateTimeout: 7000,
-    getItemsTimeout: 3000,
+    getItemsTimeout: 1500,
     promoTimeout: 60000,
     rotateTimeoutId: 0,
     getItemsTimeoutId: 0,

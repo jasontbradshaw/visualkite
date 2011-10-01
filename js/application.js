@@ -1,6 +1,6 @@
 $(function () {
   var visKiteDefaults = {
-    sinceId: '?',
+    sinceId: '',
     maxItems: 2,
     rotateTimeout: 5000,
     getItemsTimeout: 3000,

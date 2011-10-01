@@ -10,7 +10,7 @@ function Carousel(options) {
 
   var unboundedLength = true;
   var maxItems;
-  if(typeof options !== "undefined" && options['max']) {
+  if(options !== undefined && options['max']) {
     maxItems = options['max'];
     unboundedLength = false;
   }
@@ -47,7 +47,7 @@ function Carousel(options) {
   //
   // TODO to delete always the earliest-pushed items, we can use three queues.
   this.trim = function (max) {
-    if(typeof max === "undefined") {
+    if(max === undefined) {
       max = maxItems;
     }
     if(this.length() > max) {
@@ -79,15 +79,15 @@ function Carousel(options) {
 // Queue implementation using LocalStorage.
 
 function StoredQueue(name, options) {
-  if(typeof(name) === "undefined") {
+  if(name === undefined) {
     name = (new Date()).getTime();
   }
 
   // Default options
-  if(typeof(options) === "undefined") {
+  if(options === undefined) {
     options = {};
   }
-  if(typeof(options.clearExistingData) === "undefined") {
+  if(options.clearExistingData === undefined) {
     options.clearExistingData = false;
   }
 
@@ -170,7 +170,7 @@ function LocalStorage(name) {
   }
 
   this.incr = function (attribute, incrValue) {
-    if(typeof incrValue === "undefined") {
+    if(incrValue === undefined) {
       incrValue = 1;
     }
 

@@ -95,8 +95,8 @@ a {
 
 #debug-bar {
   position: absolute;
-  top: 0;
-  left: 0;
+  bottom: 0;
+  right: 0;
   background-color: transparent;
   color: transparent;
   padding: 5px;
@@ -107,16 +107,46 @@ a {
 }
 
 #debug-bar.mouseenter {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.75);
-  border-right: 2px solid rgba(255, 255, 255, 0.75);
+  background-color: rgba(255, 255, 255, 0.75);
+  border-bottom: 2px solid rgba(255, 255, 255, 1.0);
+  border-right: 2px solid rgba(255, 255, 255, 1.0);
   border-radius: 0 0 6px 0;
 }
 
 #debug-bar.mouseenter a {
-  color: #eee;
+  color: #666;
 }
 
 #debug-bar span.button {
   padding: 0 10px;
+}
+
+.promo {
+  background-color: rgba(255, 255, 255, 0.85);
+  width: 800px;
+  float: left;
+  margin-left: 100px;
+  padding: 0;
+
+  border-left: 6px solid rgba(84, 77, 71, 0.9);
+  border-right: 6px solid rgba(84, 77, 71, 0.9);
+  border-bottom: 6px solid rgba(84, 77, 71, 0.9);
+
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.promo-item {
+  overflow: auto;
+  padding: 50px 50px;
+  margin: 20px 0px 20px - 80px;
+
+  font-size: 40px;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.promo-item .text {
+  color: #111111;
+  overflow: hidden;
 }

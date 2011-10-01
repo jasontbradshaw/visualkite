@@ -4,9 +4,11 @@ $(function () {
     maxItems: 3,
     rotateTimeout: 5000,
     getItemsTimeout: 3000,
-    paused: false,
+    promoTimeout: 8000,
     rotateTimeoutId: 0,
-    getItemsTimeoutId: 0
+    getItemsTimeoutId: 0,
+    paused: false,
+    promoEnabled: true
   };
 
   var visKite = deepCopy(visKiteDefaults);
@@ -99,6 +101,50 @@ $(function () {
     });
   };
 
+  ///////////
+  // Promo //
+  ///////////
+
+  var renderPromo = function (tweets) {
+    var tweet = tweets[0];
+    // build the dom promo item
+    var promoItem = dom("div", "promo-item");
+    var rightContent = dom("div", "right-content");
+    var text = dom("div", "text").text(tweet.text);
+
+    // add all the elements where they're supposed to go
+    promoItem.append(rightContent);
+    rightContent.append(text);
+
+    // box starts up (hidden)
+    $(".promo").slideUp("fast", function() {
+
+      // if promoItem exists, delete before inserting
+      if ($(".promo .promo-item").length == 1) {
+        $(".promo .promo-item").fadeOut("slow", function() {
+          $(this).remove();
+          $(".promo").append(promoItem);
+        });
+      } else {
+        $(".promo").append(promoItem);
+      }
+
+      // slide box down
+      $(".promo").slideDown("slow");
+    });
+  };
+
+  var getPromo = function () {
+    visKite.getPromoTimeoutId = setTimeout(getPromo, visKite.promoTimeout);
+
+    if(!visKite.promoEnabled) {
+      return;
+    }
+
+    $.getJSON("http://tweetriver.com/massrelevance/glee.json?&callback=?",
+              {limit: 1}, renderPromo);
+  };
+
   // Push tweets into carousel.
   var pushTweets = function (tweets) {
     $.each(tweets, function(i, tweet) {
@@ -115,7 +161,7 @@ $(function () {
       visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
     }
     $.getJSON("http://tweetriver.com/ElbenShira/kite-test.json?&callback=?",
-        {limit: 3, since_id: visKite.sinceId}, pushTweets);
+              {limit: 3, since_id: visKite.sinceId}, pushTweets);
   };
 
   // This rotates the carousel. Rotates every 3 seconds.
@@ -158,6 +204,11 @@ $(function () {
     $("#debug-clear-carousel-button").click(function () {
       carousel.clear();
     });
+
+    $("#debug-toggle-promo-button").click(function () {
+      $(".promo").toggle();
+      visKite.promoEnabled = !visKite.promoEnabled;
+    });
   };
 
   var buildTweet = function (tweet_text) {
@@ -189,6 +240,16 @@ $(function () {
     return div;
   };
 
+
+  /////////
+  // Run //
+  /////////
+
+  // create promo area
+  var promo = dom("div", "promo");
+  $("body").append(promo);
+
+  getPromo();
   getTweets();
   renderTweet(carousel.next());
   renderTweet(carousel.next());

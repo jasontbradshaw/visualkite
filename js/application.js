@@ -2,7 +2,7 @@ $(function () {
   var visKiteDefaults = {
     sinceId: '',
     maxItems: 2,
-    rotateTimeout: 5000,
+    rotateTimeout: 7000,
     getItemsTimeout: 3000,
     promoTimeout: 60000,
     rotateTimeoutId: 0,

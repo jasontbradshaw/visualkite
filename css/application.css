@@ -34,17 +34,18 @@ a {
   color: #ffa8cf;
 }
 
-/* 1920 - 1000 = 920 */
 .stream {
-  background-color: rgba(255, 255, 255, 1.0);
+  background-color: rgba(255, 255, 255, 0.8);
   width: 1200px;
   height: 100%;
   position: absolute;
-  margin: 0 100px;
+  margin: 0;
   margin-left: 360px;
 
-  border-left: 6px solid rgba(200, 200, 200, 0.8);
-  border-right: 6px solid rgba(200, 200, 200, 0.8);
+  /*border-left: 8px solid rgba(150, 150, 150, 0.8);*/
+  /*border-right: 8px solid rgba(150, 150, 150, 0.8);*/
+  -webkit-box-shadow: 0px 0px 80px #000;
+  box-shadow: 0px 0px 80px #000;
 }
 
 .item {
@@ -64,13 +65,16 @@ a {
 
 .item .pic {
   float: left;
-  margin-right: 20px;
-  border: 6px solid #ffffff;
-  border-radius: 6px;
+  margin-right: 40px;
+  border: 12px solid #ffffff;
+  border-radius: 20px;
   width: 200px;
   height: 200px;
   background-size: 100%;
   background-color: #eeefff;
+
+  -webkit-box-shadow: 0px 0px 20px #333;
+  box-shadow: -5px 0px 20px #333;
 }
 
 .author .screen-name {
@@ -138,8 +142,8 @@ a {
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
 
-  -webkit-box-shadow: 15px -15px 40px #333;
-  box-shadow: 15px -15px 40px #333;
+  -webkit-box-shadow: 0px 0px 40px #333;
+  box-shadow: 0px 0px 40px #333;
 }
 
 .promo-item {

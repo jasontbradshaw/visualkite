@@ -10,7 +10,7 @@ function Carousel(options) {
 
   var unboundedLength = true;
   var maxItems;
-  if(typeof options != "undefined" && options['max']) {
+  if(typeof options !== "undefined" && options['max']) {
     maxItems = options['max'];
     unboundedLength = false;
   }
@@ -47,7 +47,7 @@ function Carousel(options) {
   //
   // TODO to delete always the earliest-pushed items, we can use three queues.
   this.trim = function (max) {
-    if(typeof max == "undefined") {
+    if(typeof max === "undefined") {
       max = maxItems;
     }
     if(this.length() > max) {
@@ -79,21 +79,21 @@ function Carousel(options) {
 // Queue implementation using LocalStorage.
 
 function StoredQueue(name, options) {
-  if(typeof(name) == "undefined") {
+  if(typeof(name) === "undefined") {
     name = (new Date()).getTime();
   }
 
   // Default options
-  if(typeof(options) == "undefined") {
+  if(typeof(options) === "undefined") {
     options = {};
   }
-  if(typeof(options.clearExistingData) == "undefined") {
+  if(typeof(options.clearExistingData) === "undefined") {
     options.clearExistingData = false;
   }
 
   var storage = new LocalStorage('StoredQueue.' + name);
 
-  if(options.clearExistingData || storage.json('queue') == undefined) {
+  if(options.clearExistingData || storage.json('queue') === undefined) {
     storage.set('queue', []);
   }
 
@@ -106,7 +106,7 @@ function StoredQueue(name, options) {
   };
 
   this.isEmpty = function () {
-    return this.length() == 0;
+    return this.length() === 0;
   };
 
   this.push = function (item) {
@@ -138,7 +138,7 @@ function StoredQueue(name, options) {
 function LocalStorage(name) {
 
   this._key = function (attribute) {
-    if(attribute && attribute != '') {
+    if(attribute && attribute !== '') {
       return "LocalStorage." + name + "." + attribute;
     }
     return "LocalStorage." + name;
@@ -150,7 +150,7 @@ function LocalStorage(name) {
   };
 
   this.set = function (attribute, value) {
-    if(typeof(value) != "string") {
+    if(typeof(value) !== "string") {
       value = JSON.stringify(value);
     }
     var key = this._key(attribute);
@@ -170,7 +170,7 @@ function LocalStorage(name) {
   }
 
   this.incr = function (attribute, incrValue) {
-    if(typeof incrValue == "undefined") {
+    if(typeof incrValue === "undefined") {
       incrValue = 1;
     }
 
@@ -190,7 +190,7 @@ function LocalStorage(name) {
     for(var key in window.localStorage) {
       if(window.localStorage.hasOwnProperty(key)) {
         var substr = key.substring(0, len);
-        if(substr == namespace) {
+        if(substr === namespace) {
           deletedKeys.push(key);
           delete window.localStorage[key];
         }

@@ -234,6 +234,8 @@ $(function () {
           div.append(token);
         }
         div.append(" ");
+      } else {
+        div.append(" " + token + " ");
       }
     });
 

@@ -70,7 +70,7 @@ $(function () {
   var renderTweet = function (tweet) {
     // get a larger pic than the default profile pic
     var picUrl = tweet.user.profile_image_url
-      .replace("normal", "reasonably_small");
+      .replace("_normal", "_reasonably_small");
 
     // build the dom tweet item
     var item = dom("div", "item");
@@ -148,7 +148,6 @@ $(function () {
   // Push tweets into carousel.
   var pushTweets = function (tweets) {
     $.each(tweets, function(i, tweet) {
-      console.log(i + " " + tweet.order_id + " " + tweet.text);
       carousel.push(tweet);
       if (i == 0) {
         visKite.sinceId = tweet.order_id;
@@ -161,7 +160,6 @@ $(function () {
     if(!visKite.paused) {
       visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
     }
-    console.log("Using since id: " + visKite.sinceId);
     $.getJSON("http://tweetriver.com/ElbenShira/dominican-joe.json?&callback=?",
               {limit: 10, since_id: visKite.sinceId}, pushTweets);
   };

@@ -75,107 +75,100 @@ function Carousel(options) {
     }
 };
 
-// a queue object that, internally, uses an array and tracks pointers to the
-// head/tail so we can acheive constant-time modification. defaults to a maximum
-// size of 10, but this can be specified.
-function Queue (init) {
-    // the list where we internally store elements. defaults to a size of 10.
-    this.queue = undefined;
+// a queue that stores items internally in an object keyed by index number. as
+// items are added, the tail index is simply increased and items are added at
+// ever-increasing indexes. as items are removed, the head index is decreased
+// and the orphaned indexes are deleted. this allows for constant-time insertion
+// and deletion.
+function Queue () {
+    // where the objects get stored
+    var queue = {};
 
-    // if we were given an array, create an array of that size and copy its
-    // members into it.
-    if (init instanceof Array) {
-        this.queue = new Array(init.length);
+    // we manually track the queue's head and tail
+    var head = 0; // index of the least recent item in the queue
+    var tail = 0; // index of the first empty slot in the queue
 
-        // copy the elements into the internal queue
-        for (var i = 0; i < init.length; i++) {
-            this.queue[i] = init[i];
-        }
+    // a public member that contains the calculated length of the queue. nothing
+    // internal depends on this, it just gets updated every time the length
+    // changes (prevents user breaking the queue).
+    this.length = 0;
 
-        // set the size to the size of the queue
-        this.size = this.queue.length;
-    }
-    // if we were given a number, create an array of that size
-    else if (!isNaN(init)) {
-        // make sure the object is a basic number before passing it to Array
-        this.queue = new Array(Number(init));
-    }
+    // a simple function for keeping the length member up-to-date
+    var getLength = function () {
+        return tail - head;
+    };
 
-    // if we were given nothing, create an array of the default size
-    else if (init === undefined) {
-        this.queue = new Array(10);
-    }
-
-    // we manually track the queue's head, tail, and size so we can get
-    // constant-time modification.
-    this.size = 0; // the number of items in the queue
-    this.headIndex = 0; // index of the least recent item in the queue
-    this.tailIndex = 0; // index of the most recent item in the queue, points to an empty index by default
-
-    // wraps a number forwards in the range [0, size)
-    var wrap = function (num, size) {
-        if (num >= size - 1) {
-            return 0;
-        }
-
-        return ++num;
-    }
-
-    // adds an item to the end of the queue. returns true if the add was
-    // successful, false if the queue was full and the add didn't succeed.
+    // adds an item to the end of the queue. returns the queue itself, so calls
+    // can be easily chained.
     this.enqueue = function (item) {
-        // don't allow an add if the queue is full
-        if (this.size >= this.queue.length) {
-            return false;
-        }
+        // add the item to the tail and increment the tail to an empty slot
+        queue[tail++] = item;
+        this.length = getLength();
 
-        // put the item into the queue as the newest tail, increase the size
-        this.queue[this.tailIndex] = item;
-        this.size++;
-
-        // wrap the tail
-        this.tailIndex = wrap(this.tailIndex, this.queue.length);
-
-        // return that we sucessfully inserted the item
-        return true;
+        // return the queue object so we can chain calls
+        return this;
     }
 
     // dequeues an item from the queue and returns it. returns null if there
     // were no items to dequeue.
     this.dequeue = function () {
-        if (this.size <= 0) {
+        // if the queue is empty, return null
+        if (head === tail) {
             return null;
         }
 
-        // store the head item away so we can return it later
-        var headItem = this.queue[this.headIndex];
+        // store the first item in the queue
+        var dequeuedItem = queue[head];
 
-        // wrap the head
-        this.headIndex = wrap(this.headIndex, this.queue.length);
+        // delete the former head index then increment the head
+        delete queue[head++];
+        this.length = getLength();
 
-        // decrease the size of the queue
-        this.size--;
+        // reset the queue and the pointers if we've emptied the queue. this
+        // should keep the indexes from growing too large, as long as the queue
+        // is peridically emptied.
+        if (getLength() === 0) {
+            this.clear();
+        }
 
-        // return the original head of the queue
-        return headItem;
+        // return the dequeued item
+        return dequeuedItem;
     }
 
     // returns the first item in the queue without dequeuing it. if there are no
     // items in the queue, returns null.
     this.peek = function () {
-        if (this.size <= 0) {
+        // if the queue is empty, return null
+        if (head === tail) {
             return null;
         }
 
-        return this.queue[this.headIndex];
+        return queue[head];
+    }
+
+    // returns a map of all the private member variables for testing purposes.
+    this.__getPrivateMembers__ = function () {
+        // copy the internal queue so it can't be modified
+        var queueCopy = {};
+        for (var key in queue) {
+            queueCopy[key] = queue[key];
+        }
+
+        // return the head, tail, and a copy of the queue
+        return {
+            "head": head,
+            "tail": tail,
+            "queue": queueCopy,
+        };
     }
 
     // removes all the items from the internal queue, emptying it.
     this.clear = function () {
-        // reset the index pointers, effectively clearing the queue
-        this.size = 0;
-        this.headIndex = 0;
-        this.tailIndex = 0;
+        // reset the counters and the object, clearing the queue
+        head = 0;
+        tail = 0;
+        queue = {}
+        this.length = getLength();
     }
 }
 

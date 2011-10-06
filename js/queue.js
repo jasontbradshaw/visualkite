@@ -2,7 +2,8 @@
 // items are added, the tail index is simply increased and items are added at
 // ever-increasing indexes. as items are removed, the head index is decreased
 // and the orphaned indexes are deleted. this allows for constant-time insertion
-// and deletion.
+// and deletion. by design, the queue can only hold 2^32 - 1 items to cause an
+// eventual, if infrequent, reset of pointer values.
 function Queue () {
     // where the objects get stored
     var queue = {};
@@ -11,11 +12,45 @@ function Queue () {
     var head = 0; // index of the least recent item in the queue
     var tail = 0; // index of the first empty slot in the queue
 
-    // a public member that contains the calculated length of the queue. nothing
-    // internal depends on this, it just gets updated every time the length
-    // changes (prevents user breaking the queue).
-    this.length = 0;
+    // we default to holding a max of ~4 billion items, but this limit is
+    // largely arbitrary. if more are required, it could likely be increased to
+    // no ill effect. it exists only to cause a reset of pointer values when
+    // they grow very large, to prevent an eventual overflow.
+    var resetIndex = Math.pow(2, 32) - 1;
 
+    // cleans up the pointers if they grow too large or the queue becomes empty.
+    // prevents premature overflow of queue indexes. takes a single optional
+    // argument, the largest possible value for the tail pointer. defaults to a
+    // max index of 2^32 - 1.
+    var reducePointers = function (maxTail) {
+        // take an optional argument, the largest possible value for the tail
+        if (maxTail === undefined) {
+            maxTail = resetIndex;
+        }
+
+        // reset pointers when we've emptied the queue
+        if ((tail - head) === 0) {
+            tail = 0;
+            head = 0;
+        }
+
+        // do an index shift operation if our indexes become too large and the
+        // queue isn't completely full.
+        else if (tail > maxTail && head > 0) {
+            // shift all indexes down by moving them to new indexes
+            for (var i = head; i < tail; i++) {
+                // move the item to a new index
+                queue[i - head] = queue[i];
+
+                // remove the old index
+                delete queue[i];
+            }
+
+            // reset the canonical pointers
+            tail = tail- head;
+            head = 0;
+        }
+    }
 
     // returns the number of items in the queue
     this.length = function () {
@@ -32,6 +67,9 @@ function Queue () {
     this.enqueue = function (item) {
         // add the item to the tail and increment the tail to an empty slot
         queue[tail++] = item;
+
+        // clean up pointers
+        reducePointers();
 
         // return the queue object so we can chain calls
         return this;
@@ -51,6 +89,8 @@ function Queue () {
         // delete the former head index then increment the head
         delete queue[head++];
 
+        // clean up pointers
+        reducePointers();
 
         // return the dequeued item
         return dequeuedItem;
@@ -83,11 +123,14 @@ function Queue () {
             queueCopy[key] = queue[key];
         }
 
-        // return the head, tail, and a copy of the queue
+        // return the head, tail, a copy of the queue, and the function used to
+        // reduce pointers.
         return {
             "head": head,
             "tail": tail,
             "queue": queueCopy,
+            "resetIndex": resetIndex,
+            "reducePointers": reducePointers
         };
     };
 }

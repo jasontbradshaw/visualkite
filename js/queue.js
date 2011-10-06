@@ -16,9 +16,15 @@ function Queue () {
     // changes (prevents user breaking the queue).
     this.length = 0;
 
-    // a simple function for keeping the length member up-to-date
-    var getLength = function () {
+
+    // returns the number of items in the queue
+    this.length = function () {
         return tail - head;
+    };
+
+    // returns true when there are no items in the queue, false otherwise
+    this.isEmpty = function () {
+        return (tail - head) == 0;
     };
 
     // adds an item to the end of the queue. returns the queue itself, so calls
@@ -26,7 +32,6 @@ function Queue () {
     this.enqueue = function (item) {
         // add the item to the tail and increment the tail to an empty slot
         queue[tail++] = item;
-        this.length = getLength();
 
         // return the queue object so we can chain calls
         return this;
@@ -45,14 +50,7 @@ function Queue () {
 
         // delete the former head index then increment the head
         delete queue[head++];
-        this.length = getLength();
 
-        // reset the queue and the pointers if we've emptied the queue. this
-        // should keep the indexes from growing too large, as long as the queue
-        // is peridically emptied.
-        if (getLength() === 0) {
-            this.clear();
-        }
 
         // return the dequeued item
         return dequeuedItem;
@@ -69,8 +67,12 @@ function Queue () {
         return queue[head];
     };
 
-    this.isEmpty = function () {
-        return this.length == 0;
+    // removes all the items from the internal queue, emptying it.
+    this.clear = function () {
+        // reset the counters and the object, clearing the queue
+        head = 0;
+        tail = 0;
+        queue = {};
     };
 
     // returns a map of all the private member variables for testing purposes.
@@ -87,14 +89,5 @@ function Queue () {
             "tail": tail,
             "queue": queueCopy,
         };
-    };
-
-    // removes all the items from the internal queue, emptying it.
-    this.clear = function () {
-        // reset the counters and the object, clearing the queue
-        head = 0;
-        tail = 0;
-        queue = {}
-        this.length = getLength();
     };
 }

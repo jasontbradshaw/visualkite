@@ -7,13 +7,13 @@ describe("Queue", function () {
 
     describe("length", function () {
         it("should be zero if empty", function () {
-            expect(queue.length).toEqual(0);
+            expect(queue.length()).toEqual(0);
         });
 
         it("should be the right size", function () {
             queue.enqueue({id: 1});
             queue.enqueue({id: 2});
-            expect(queue.length).toEqual(2);
+            expect(queue.length()).toEqual(2);
         });
     });
 
@@ -35,7 +35,7 @@ describe("Queue", function () {
     describe("dequeue", function () {
         it("should return undefined if queue is empty", function () {
             expect(queue.dequeue()).toEqual(undefined);
-            expect(queue.length).toEqual(0);
+            expect(queue.length()).toEqual(0);
         });
 
         it("should return in FIFO order", function () {
@@ -59,9 +59,9 @@ describe("Queue", function () {
             expect(queue.dequeue()).toEqual("");
             expect(queue.dequeue()).toEqual({a: [1, 2, {b: 3}]});
             expect(queue.dequeue()).toEqual(undefined);
-            expect(queue.length).toEqual(0);
+            expect(queue.length()).toEqual(0);
             expect(queue.dequeue()).toEqual(undefined);
-            expect(queue.length).toEqual(0);
+            expect(queue.length()).toEqual(0);
         });
 
         it("should chain queues", function () {
@@ -75,7 +75,7 @@ describe("Queue", function () {
         it("should clear", function () {
             queue.enqueue({});
             queue.clear();
-            expect(queue.length).toEqual(0);
+            expect(queue.length()).toEqual(0);
             expect(queue.dequeue()).toEqual(undefined);
         });
     });

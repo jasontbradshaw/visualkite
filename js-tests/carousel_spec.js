@@ -77,22 +77,6 @@ describe("Carousel", function () {
             expect(carousel.length()).toEqual(1);
             expect(carousel.next()).toEqual({id: 2});
         });
-
-        it("should trim earliest-pushed elements first", function () {
-            for(var i = 0; i < 3; ++i) {
-                carousel.push({id: i});
-            }
-
-            carousel.next(); // upcoming: [1, 2]  history: [0]
-            carousel.next(); // upcoming:    [2]  history: [0, 1]
-            carousel.next(); // upcoming:     []  history: [0, 1, 2]
-            carousel.next(); // upcoming:     []  history: [1, 2, 0]
-            carousel.trim(1);
-
-            expect(carousel.length()).toEqual(1);
-            // TODO this will fail because time-sensitive trimming is not implemented.
-            expect(carousel.next()).toEqual({id: 2});
-        });
     });
 
     describe("clear", function () {

@@ -64,9 +64,9 @@ function Carousel(options) {
                 --toDelete;
             }
 
-            while(toDelete > 0 && !upcomingQueue.isEmpty()) {
+            while(toDeleteFromUpcoming > 0 && !upcomingQueue.isEmpty()) {
                 upcomingQueue.dequeue();
-                --toDelete;
+                --toDeleteFromUpcoming;
             }
         }
     };

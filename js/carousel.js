@@ -5,12 +5,12 @@
 //  max: max number of items. Entries will be deleted on overflow.
 
 function Carousel(options) {
-    var historyQueue = new Queue('carousel.history', options);
-    var upcomingQueue = new Queue('carousel.upcoming', options);
+    var historyQueue = new Queue()
+    var upcomingQueue = new Queue()
 
     var unboundedLength = true;
     var maxItems;
-    if(options !== undefined && options['max']) {
+    if (options !== undefined && options['max']) {
         maxItems = options['max'];
         unboundedLength = false;
     }
@@ -22,14 +22,17 @@ function Carousel(options) {
 
     this.next = function () {
         var item = undefined;
-        if(!upcomingQueue.isEmpty()) {
+
+        if (!upcomingQueue.isEmpty()) {
             item = upcomingQueue.peek();
             historyQueue.enqueue(upcomingQueue.dequeue());
-        } else if(!historyQueue.isEmpty()) {
+        }
+        else if (!historyQueue.isEmpty()) {
             // Nothing in upcoming queue.
             item = historyQueue.dequeue();
             historyQueue.enqueue(item);
         }
+
         return item;
     };
 
@@ -47,17 +50,20 @@ function Carousel(options) {
     //
     // TODO to delete always the earliest-pushed items, we can use three queues.
     this.trim = function (max) {
-        if(max === undefined) {
+        if (max === undefined) {
             max = maxItems;
         }
-        if(this.length() > max) {
+
+        if (this.length() > max) {
             // Delete stuff from the historyQueue first.
             var toDelete = this.length() - max;
             var toDeleteFromUpcoming = toDelete - historyQueue.length();
+
             while(toDelete > 0 && !historyQueue.isEmpty()) {
                 historyQueue.dequeue();
                 --toDelete;
             }
+
             while(toDelete > 0 && !upcomingQueue.isEmpty()) {
                 upcomingQueue.dequeue();
                 --toDelete;

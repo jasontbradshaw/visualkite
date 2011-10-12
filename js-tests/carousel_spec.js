@@ -79,21 +79,23 @@ describe("Carousel", function () {
 
     describe("trim", function () {
         it("should trim history elements first", function () {
-            for(var i = 0; i < 3; ++i) {
+            for(var i = 0; i < 4; ++i) {
                 carousel.push({id: i});
             }
 
-            carousel.next(); // upcoming: [1, 2], history: [0]
+            // upcoming: [0, 1, 2, 3], history: []
+            carousel.next(); // upcoming: [1, 2, 3], history: [0]
+            carousel.next(); // upcoming: [2, 3], history: [0, 1]
 
             expect(carousel.lengthUpcoming()).toEqual(2);
-            expect(carousel.lengthHistory()).toEqual(1);
+            expect(carousel.lengthHistory()).toEqual(2);
 
-            carousel.trim(1);
+            carousel.trim(1); // upcoming: [3], history: []
 
             expect(carousel.lengthUpcoming()).toEqual(1);
             expect(carousel.lengthHistory()).toEqual(0);
             expect(carousel.length()).toEqual(1);
-            expect(carousel.next()).toEqual({id: 2});
+            expect(carousel.next()).toEqual({id: 3});
         });
     });
 

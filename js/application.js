@@ -59,9 +59,10 @@ $(function () {
             $(".item:eq(0)").slideDown("slow");
 
             // asyncronously (to the insertion), delete overflow
-            var overflowLength = $(".stream .item").length - visKite.maxItems;
-            if (overflowLength >= 0) {
-                $(".stream .item:gt(" + (visKite.maxItems - overflowLength) + ")").fadeOut('slow', function () { $(this).remove(); })
+            if ($(".stream .item").length > visKite.maxItems) {
+                $(".stream .item:gt(" + visKite.maxItems + ")").fadeOut('slow', function () {
+                    $(this).remove();
+                });
             }
         };
     }

@@ -44,6 +44,14 @@ function Carousel(options) {
         return historyQueue.length() + upcomingQueue.length();
     };
 
+    this.lengthUpcoming = function () {
+        return upcomingQueue.length();
+    }
+
+    this.lengthHistory = function () {
+        return historyQueue.length();
+    }
+
     // Removes items if number of items is above maxItems.
     // Deletion order is semi-arbitrary; it deletes the items in front of the
     // historyQueue.

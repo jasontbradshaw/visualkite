@@ -27,9 +27,15 @@ describe("Carousel", function () {
             });
 
             it("should carousel in the right order", function () {
+                expect(carousel.lengthUpcoming()).toEqual(2);
+                expect(carousel.lengthHistory()).toEqual(1);
+
                 expect(carousel.next()).toEqual({'id': 1});
                 expect(carousel.next()).toEqual({'id': 2});
                 expect(carousel.next()).toEqual({'id': 3});
+
+                expect(carousel.lengthUpcoming()).toEqual(0);
+                expect(carousel.lengthHistory()).toEqual(3);
 
                 // upcoming: []
                 // history:  [1, 2, 3]
@@ -41,6 +47,9 @@ describe("Carousel", function () {
 
                 carousel.push({'id': 4});
 
+                expect(carousel.lengthUpcoming()).toEqual(1);
+                expect(carousel.lengthHistory()).toEqual(3);
+
                 // upcoming: [4]
                 // history:  [1, 2, 3]
 
@@ -51,6 +60,9 @@ describe("Carousel", function () {
                 expect(carousel.next()).toEqual({'id': 5});
                 expect(carousel.next()).toEqual({'id': 3});
                 expect(carousel.next()).toEqual({'id': 4});
+
+                expect(carousel.lengthUpcoming()).toEqual(0);
+                expect(carousel.lengthHistory()).toEqual(5);
 
                 // upcoming: []
                 // history:  [1, 2, 5, 3, 4]
@@ -72,8 +84,14 @@ describe("Carousel", function () {
             }
 
             carousel.next(); // upcoming: [1, 2], history: [0]
+
+            expect(carousel.lengthUpcoming()).toEqual(2);
+            expect(carousel.lengthHistory()).toEqual(1);
+
             carousel.trim(1);
 
+            expect(carousel.lengthUpcoming()).toEqual(1);
+            expect(carousel.lengthHistory()).toEqual(0);
             expect(carousel.length()).toEqual(1);
             expect(carousel.next()).toEqual({id: 2});
         });

@@ -62,20 +62,12 @@ function Carousel(options) {
             max = maxItems;
         }
 
-        if (this.length() > max) {
-            // Delete stuff from the historyQueue first.
-            var toDelete = this.length() - max;
-            var toDeleteFromUpcoming = toDelete - historyQueue.length();
-
-            while(toDelete > 0 && !historyQueue.isEmpty()) {
-                historyQueue.dequeue();
-                toDelete--;
-            }
-
-            while(toDeleteFromUpcoming > 0 && !upcomingQueue.isEmpty()) {
-                upcomingQueue.dequeue();
-                toDeleteFromUpcoming--;
-            }
+        // Delete stuff from the historyQueue first.
+        while (this.length() > max && !historyQueue.isEmpty()) {
+            historyQueue.dequeue();
+        }
+        while (this.length() > max && !upcomingQueue.isEmpty()) {
+            upcomingQueue.dequeue();
         }
     };
 

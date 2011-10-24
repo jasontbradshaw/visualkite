@@ -107,10 +107,17 @@ $(function () {
 
     var renderPromo = function (tweets) {
         var tweet = tweets[0];
+        var text = buildTweet(tweet.text);
+
+        // if new tweet is same as current tweet, break
+        var curText = $("div.promo-item").text();
+        if (text.text() == curText) {
+            return;
+        }
+
         // build the dom promo item
         var promoItem = dom("div", "promo-item");
         var rightContent = dom("div", "right-content");
-        var text = buildTweet(tweet.text);
 
         // add all the elements where they're supposed to go
         promoItem.append(rightContent);

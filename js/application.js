@@ -173,7 +173,7 @@ $(function () {
             visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
         }
         $.getJSON(visKite.tweetsUri + "?&callback=?",
-                  {limit: 50, since_id: visKite.sinceId}, pushTweets);
+                  {limit: 30, since_id: visKite.sinceId}, pushTweets);
     };
 
     // This rotates the carousel.

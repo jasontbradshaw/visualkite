@@ -69,6 +69,10 @@ $(function () {
 
     // create a tweet and add it to the display queue
     var renderTweet = function (tweet) {
+        if(tweet == undefined || tweet == null) {
+            return;
+        }
+
         // get a larger pic than the default profile pic
         var picUrl = tweet.user.profile_image_url
         .replace("_normal", "_reasonably_small");
@@ -259,10 +263,12 @@ $(function () {
 
     getPromo();
     getTweets();
-    renderTweet(carousel.next());
-    renderTweet(carousel.next());
-    rotate();
     setupDebugBar();
+
+    // Allow some time for tweets to be pulled in before starting rotation.
+    setTimeout(function () {
+        rotate();
+    }, 1000);
 });
 
 var shallowCopy = function (o) {

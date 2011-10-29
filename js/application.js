@@ -173,7 +173,7 @@ $(function () {
             visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
         }
         $.getJSON(visKite.tweetsUri + "?&callback=?",
-                  {limit: 10, since_id: visKite.sinceId}, pushTweets);
+                  {limit: 50, since_id: visKite.sinceId}, pushTweets);
     };
 
     // This rotates the carousel.
@@ -268,7 +268,7 @@ $(function () {
     // Allow some time for tweets to be pulled in before starting rotation.
     setTimeout(function () {
         rotate();
-    }, 1000);
+    }, 4000);
 });
 
 var shallowCopy = function (o) {

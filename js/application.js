@@ -10,12 +10,13 @@ $(function () {
         paused: false,
         promoEnabled: true,
         tweetsUri: "http://tweetriver.com/ElbenShira/dominican-joe-2.json",
-        promoUri: "http://tweetriver.com/ElbenShira/dominican-joe-promo.json"
+        promoUri: "http://tweetriver.com/ElbenShira/dominican-joe-promo.json",
+        numTweetsPulled: 30
     };
 
     var visKite = deepCopy(visKiteDefaults);
 
-    var carousel = new Carousel({max: 10});
+    var carousel = new Carousel({max: visKite.numTweetsPulled});
 
     // create a DOM element with optional class and id
     var dom = function (elementName, clazz, id) {
@@ -173,7 +174,7 @@ $(function () {
             visKite.getItemsTimeoutId = setTimeout(getTweets, visKite.getItemsTimeout);
         }
         $.getJSON(visKite.tweetsUri + "?&callback=?",
-                  {limit: 30, since_id: visKite.sinceId}, pushTweets);
+                  {limit: visKite.numTweetsPulled, since_id: visKite.sinceId}, pushTweets);
     };
 
     // This rotates the carousel.

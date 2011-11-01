@@ -11,7 +11,7 @@ $(function () {
         promoEnabled: true,
         tweetsUri: "http://tweetriver.com/ElbenShira/dominican-joe-2.json",
         promoUri: "http://tweetriver.com/ElbenShira/dominican-joe-promo.json",
-        numTweetsPulled: 30
+        numTweetsPulled: 20
     };
 
     var visKite = deepCopy(visKiteDefaults);

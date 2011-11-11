@@ -152,6 +152,64 @@ $(function () {
                   {limit: 1}, renderPromo);
     };
 
+    //////////////
+    // Featured //
+    //////////////
+
+    var renderFeaturedTweet = function (tweet) {
+        // get a larger pic than the default profile pic
+        var picUrl = tweet.user.profile_image_url
+        .replace("_normal", "_reasonably_small");
+
+        // build the dom tweet item
+        var item = dom("div", "item");
+        var pic = dom("canvas", "pic");
+        var rightContent = dom("div", "right-content");
+        var author = dom("div", "author");
+        var screenName = dom("span", "screen-name").text(tweet.user.screen_name);
+        var authorName = dom("span", "author-name").text(tweet.user.name);
+        var text = buildTweet(tweet.text);
+
+        // add all the elements where they're supposed to go
+        item.append(pic);
+        item.append(rightContent);
+        rightContent.append(author);
+        author.append(screenName);
+        author.append(authorName);
+        rightContent.append(text);
+
+        // draw the profile image onto the pic canvas (prevents gif animations)
+        var profilePic = dom("img");
+        profilePic.attr("src",picUrl);
+        profilePic.load(function () {
+            var canvas = pic[0].getContext("2d");
+            canvas.drawImage(profilePic[0], 0, 0, 300, 150);
+
+            // dim screen
+            var dimmer = dom("div", "dimmer");
+            $("body").prepend(dimmer);
+            $(".dimmer").fadeTo("slow",0.8, function() {
+
+                // prepare featured area
+                var featureArea = dom("div", "featured-tweet");
+                $("body").prepend(featureArea);
+                $(".featured-tweet").append(item);
+
+                // fade in featured tweet, then fade out and remove
+                $(".featured-tweet").fadeIn("slow", function() {
+                    //$(".featured-tweet").delay(viskite.featureTimeout).fadeOut("slow", function() {
+                    $(".featured-tweet").delay(5000).fadeOut("slow", function() {
+                        $(".dimmer").fadeOut("slow", function() {
+                            $(".featured-tweet").remove();
+                            $(".dimmer").remove();
+                        });
+                    });
+                });
+            });
+        });
+
+    };
+
     // Push tweets into carousel.
     var pushTweets = function (tweets) {
         $.each(tweets, function(i, tweet) {
@@ -213,6 +271,10 @@ $(function () {
         $("#debug-toggle-promo-button").click(function () {
             $(".promo").toggle();
             visKite.promoEnabled = !visKite.promoEnabled;
+        });
+
+        $("#debug-dim-screen-button").click(function () {
+            renderFeaturedTweet(carousel.next());
         });
     };
 

@@ -5,31 +5,34 @@
 //  max: max number of items. Entries will be deleted on overflow.
 
 function Carousel(options) {
-    var historyQueue = new StoredQueue('carousel.history', options);
-    var upcomingQueue = new StoredQueue('carousel.upcoming', options);
+    var historyQueue = new Queue()
+    var upcomingQueue = new Queue()
 
     var unboundedLength = true;
     var maxItems;
-    if(options !== undefined && options['max']) {
+    if (options !== undefined && options['max']) {
         maxItems = options['max'];
         unboundedLength = false;
     }
 
     this.push = function (item) {
-        upcomingQueue.push(item);
+        upcomingQueue.enqueue(item);
         this.trim();
     };
 
     this.next = function () {
         var item = undefined;
-        if(!upcomingQueue.isEmpty()) {
+
+        if (!upcomingQueue.isEmpty()) {
             item = upcomingQueue.peek();
-            historyQueue.push(upcomingQueue.pop());
-        } else if(!historyQueue.isEmpty()) {
-            // Nothing in upcoming queue.
-            item = historyQueue.pop();
-            historyQueue.push(item);
+            historyQueue.enqueue(upcomingQueue.dequeue());
         }
+        else if (!historyQueue.isEmpty()) {
+            // Nothing in upcoming queue.
+            item = historyQueue.dequeue();
+            historyQueue.enqueue(item);
+        }
+
         return item;
     };
 
@@ -41,27 +44,30 @@ function Carousel(options) {
         return historyQueue.length() + upcomingQueue.length();
     };
 
+    this.lengthUpcoming = function () {
+        return upcomingQueue.length();
+    }
+
+    this.lengthHistory = function () {
+        return historyQueue.length();
+    }
+
     // Removes items if number of items is above maxItems.
     // Deletion order is semi-arbitrary; it deletes the items in front of the
     // historyQueue.
     //
     // TODO to delete always the earliest-pushed items, we can use three queues.
     this.trim = function (max) {
-        if(max === undefined) {
+        if (max === undefined) {
             max = maxItems;
         }
-        if(this.length() > max) {
-            // Delete stuff from the historyQueue first.
-            var toDelete = this.length() - max;
-            var toDeleteFromUpcoming = toDelete - historyQueue.length();
-            while(toDelete > 0 && !historyQueue.isEmpty()) {
-                historyQueue.pop();
-                --toDelete;
-            }
-            while(toDelete > 0 && !upcomingQueue.isEmpty()) {
-                upcomingQueue.pop();
-                --toDelete;
-            }
+
+        // Delete stuff from the historyQueue first.
+        while (this.length() > max && !historyQueue.isEmpty()) {
+            historyQueue.dequeue();
+        }
+        while (this.length() > max && !upcomingQueue.isEmpty()) {
+            upcomingQueue.dequeue();
         }
     };
 
@@ -71,7 +77,7 @@ function Carousel(options) {
     }
 
     this._pushToHistory = function (item) {
-        historyQueue.push(item);
+        historyQueue.enqueue(item);
     }
 };
 

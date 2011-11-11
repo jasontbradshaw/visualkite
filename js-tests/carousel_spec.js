@@ -27,9 +27,15 @@ describe("Carousel", function () {
             });
 
             it("should carousel in the right order", function () {
+                expect(carousel.lengthUpcoming()).toEqual(2);
+                expect(carousel.lengthHistory()).toEqual(1);
+
                 expect(carousel.next()).toEqual({'id': 1});
                 expect(carousel.next()).toEqual({'id': 2});
                 expect(carousel.next()).toEqual({'id': 3});
+
+                expect(carousel.lengthUpcoming()).toEqual(0);
+                expect(carousel.lengthHistory()).toEqual(3);
 
                 // upcoming: []
                 // history:  [1, 2, 3]
@@ -41,6 +47,9 @@ describe("Carousel", function () {
 
                 carousel.push({'id': 4});
 
+                expect(carousel.lengthUpcoming()).toEqual(1);
+                expect(carousel.lengthHistory()).toEqual(3);
+
                 // upcoming: [4]
                 // history:  [1, 2, 3]
 
@@ -51,6 +60,9 @@ describe("Carousel", function () {
                 expect(carousel.next()).toEqual({'id': 5});
                 expect(carousel.next()).toEqual({'id': 3});
                 expect(carousel.next()).toEqual({'id': 4});
+
+                expect(carousel.lengthUpcoming()).toEqual(0);
+                expect(carousel.lengthHistory()).toEqual(5);
 
                 // upcoming: []
                 // history:  [1, 2, 5, 3, 4]
@@ -67,15 +79,23 @@ describe("Carousel", function () {
 
     describe("trim", function () {
         it("should trim history elements first", function () {
-            for(var i = 0; i < 3; ++i) {
+            for(var i = 0; i < 4; ++i) {
                 carousel.push({id: i});
             }
 
-            carousel.next(); // upcoming: [1, 2], history: [0]
-            carousel.trim(1);
+            // upcoming: [0, 1, 2, 3], history: []
+            carousel.next(); // upcoming: [1, 2, 3], history: [0]
+            carousel.next(); // upcoming: [2, 3], history: [0, 1]
 
+            expect(carousel.lengthUpcoming()).toEqual(2);
+            expect(carousel.lengthHistory()).toEqual(2);
+
+            carousel.trim(1); // upcoming: [3], history: []
+
+            expect(carousel.lengthUpcoming()).toEqual(1);
+            expect(carousel.lengthHistory()).toEqual(0);
             expect(carousel.length()).toEqual(1);
-            expect(carousel.next()).toEqual({id: 2});
+            expect(carousel.next()).toEqual({id: 3});
         });
     });
 
